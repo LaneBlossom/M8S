@@ -100,10 +100,38 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .chip.mine-self{background:var(--self-bg);color:var(--self-fg);font-weight:700;box-shadow:0 0 0 1.5px var(--self)}
 .chip.mine-self .r{background:var(--self);color:var(--on-badge)}
 body:not([data-role="team"]) .chip.other{opacity:.55}
+.arena{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:16px 20px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--p2);border-radius:12px;padding:14px 16px}
+.arena-map svg{width:100%;height:auto;display:block}
+.arena-txt{min-width:0;font-size:14px;display:flex;flex-direction:column;gap:6px}
+.arena-txt h2{font-family:var(--f-disp);font-size:16px;margin:0;color:var(--p2)}
+.arena-txt p{margin:0;color:var(--fg)}
+.arena-txt .t-mt{color:var(--mt)} .arena-txt .t-st{color:var(--st)}
+.mp-link{stroke:var(--line);stroke-width:6;stroke-linecap:round}
+.arena circle{fill:var(--chip);stroke:var(--muted);stroke-width:2}
+.mp-c circle{fill:var(--panel);stroke:var(--fg);stroke-width:3}
+.mp-mt circle{fill:var(--mt);stroke:var(--mt)} .mp-st circle{fill:var(--st);stroke:var(--st)}
+.mp-boss circle{fill:var(--warn-bg);stroke:var(--warn);stroke-width:2}
+.arena text{text-anchor:middle;font-family:var(--f-body);fill:var(--fg)}
+.mp-name{font-size:15px;font-weight:700} .mp-sub{font-size:10px;font-weight:500}
+.mp-mt text,.mp-st text{fill:var(--on-badge)}
+.mp-boss text{fill:var(--warn);font-weight:700}
+.mp-wolf{fill:var(--warn)} .mp-eye{fill:var(--warn-bg)}
+.mp-num circle{fill:var(--p2);stroke:none}
+.mp-num text{fill:var(--on-badge);font-size:12px;font-weight:700;font-family:var(--f-disp)}
+.mp-dir{font-size:11px;fill:var(--muted)!important}
+@media (max-width:560px){.arena{grid-template-columns:1fr}.arena-map{max-width:280px;margin:0 auto;width:100%}}
+body.compact .arena{grid-template-columns:200px 1fr;padding:8px 12px}
+body.compact .arena-txt{font-size:13px;gap:2px}
+body.nopos .arena{display:none!important}
+.pos{display:flex;align-items:baseline;gap:8px;font-size:13px;font-weight:600;color:var(--fg)}
+.pos .pk{flex:none;font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--p2);color:var(--on-badge)}
+.rules{font-size:13px;line-height:1.7;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--p2);border-radius:8px;padding:10px 14px;margin-bottom:6px}
+.rules b{color:var(--p2)}
 .note{font-size:13px;color:var(--muted);padding-left:10px;border-left:2px solid var(--line)}
 .note.role{border-left-color:var(--self);color:var(--fg)}
 .warnbox{font-size:13px;font-weight:600;color:var(--warn);background:var(--warn-bg);padding:8px 12px;border-radius:8px}
 .endnote{font-size:13px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;margin:0}
+.thanks{margin:0;text-align:center;font-family:var(--f-disp);font-size:15px;font-weight:700;color:var(--st);padding:8px 0}
 .empty{font-size:13px;color:var(--muted)}
 
 /* compact view: one line per mechanic, multi-column on wide screens for a side monitor */
@@ -127,6 +155,10 @@ body.compact .body{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:2p
 body.compact .mech{font-size:17px;font-weight:700}
 body.compact .row.quiet .mech{font-weight:500}
 body.compact .press{display:none}
+body.compact .rules{display:none}
+body.nopos .pos,body.nopos .rules{display:none!important}
+body.compact .pos{font-size:13px;font-weight:500;flex-basis:100%;gap:6px}
+body.compact .pos .pk{font-size:10px;padding:0 5px}
 
 body.compact .chips{gap:3px}
 body.compact .chip{font-size:14px;padding:1px 7px 1px 3px;gap:5px}
@@ -169,8 +201,29 @@ body.compact .chip .r{font-size:11px;padding:0 5px}
       <button id="v-full" data-view="full" aria-pressed="true">詳細</button>
       <button id="v-compact" data-view="compact" aria-pressed="false">精簡（副螢幕）</button>
     </div>
+    <div class="bar" role="group" aria-label="站位">
+      <span class="lbl">站位</span>
+      <button id="p-on" data-pos="on" aria-pressed="true">顯示</button>
+      <button id="p-off" data-pos="off" aria-pressed="false">隱藏</button>
+    </div>
     <div class="legend" id="legend"></div>
   </div>
+
+  <section class="arena" id="arena" aria-labelledby="arena-h">
+    <div class="arena-map"><svg viewBox="0 0 320 312" role="img" aria-label="本體五個平台的相對位置：C 在最下方，C左、C右在兩側，左上、右上在上方">
+<line x1="160.0" y1="255.0" x2="259.9" y2="182.4" class="mp-link"/><line x1="259.9" y1="182.4" x2="221.7" y2="65.1" class="mp-link"/><line x1="221.7" y1="65.1" x2="98.3" y2="65.1" class="mp-link"/><line x1="98.3" y1="65.1" x2="60.1" y2="182.4" class="mp-link"/><line x1="60.1" y1="182.4" x2="160.0" y2="255.0" class="mp-link"/>
+<g class="mp-boss"><circle cx="160" cy="150" r="24"/><g transform="translate(160,149)"><path class="mp-wolf" d="M-13 -16 L-5 -8 L5 -8 L13 -16 L12 0 L5 9 L0 13 L-5 9 L-12 0 Z"/><path class="mp-eye" d="M-8 -2 L-3 0 L-8 1 Z M8 -2 L3 0 L8 1 Z"/><path class="mp-eye" d="M-2.5 8 L2.5 8 L0 11 Z"/></g><text x="160" y="190" class="mp-sub mp-bl">Boss</text></g>
+<g class="mp-c"><circle cx="160.0" cy="255.0" r="30"/><text x="160.0" y="255.0" class="mp-name">C</text><text x="160.0" y="270.0" class="mp-sub">初始</text></g><g class="mp-st"><circle cx="259.9" cy="182.4" r="30"/><text x="259.9" y="182.4" class="mp-name">C右</text><text x="259.9" y="197.4" class="mp-sub">ST 組</text></g><g class="mp-o"><circle cx="221.7" cy="65.1" r="30"/><text x="221.7" y="70.1" class="mp-name">右上</text></g><g class="mp-o"><circle cx="98.3" cy="65.1" r="30"/><text x="98.3" y="70.1" class="mp-name">左上</text></g><g class="mp-mt"><circle cx="60.1" cy="182.4" r="30"/><text x="60.1" y="182.4" class="mp-name">C左</text><text x="60.1" y="197.4" class="mp-sub">MT 組</text></g>
+<g class="mp-num"><circle cx="24.0" cy="194.2" r="11"/><text x="24.0" y="198.2">1</text></g><g class="mp-num"><circle cx="75.9" cy="34.3" r="11"/><text x="75.9" y="38.3">2</text></g><g class="mp-num"><circle cx="244.1" cy="34.3" r="11"/><text x="244.1" y="38.3">3</text></g><g class="mp-num"><circle cx="296.0" cy="194.2" r="11"/><text x="296.0" y="198.2">4</text></g><text x="160" y="304" class="mp-dir">南（入場方向）</text>
+</svg></div>
+    <div class="arena-txt">
+      <h2 id="arena-h">本體平台位置</h2>
+      <p>五個平台圍成一圈，相鄰平台用傳送裝置移動。<b>C 平台</b>是最下面（初始南邊）那個，開場全員在 C。</p>
+      <p><b>組別平台</b>：<b class="t-mt">MT 組</b>（MT、H1、D1、D3）在 <b>C左</b>，<b class="t-st">ST 組</b>（ST、H2、D2、D4）在 <b>C右</b>。</p>
+      <p>「往上一格」是沿著圈往離 C 更遠的方向走：C左 → 左上、C右 → 右上。</p>
+      <p><b>一運平台編號</b>（藍色數字）：C左 是 1，順時針依序 左上 2、右上 3、C右 4。</p>
+    </div>
+  </section>
 
   <section class="mine" id="mine" hidden aria-labelledby="mine-h">
     <h2 id="mine-h"></h2>
@@ -182,6 +235,7 @@ body.compact .chip .r{font-size:11px;padding:0 5px}
   <main class="tl" id="tl"></main>
 
   <p class="endnote">時間照 cactbot 的 M8S 時間軸換算，對齊隊伍軸的時間。技能名稱照 xivstrat 的前半、後半攻略。</p>
+  <p class="thanks">感謝 #1賢者 傑奇精華筆記分享</p>
 </div>
 
 <script>
@@ -241,47 +295,47 @@ const data = [
   {t:"06:48",m:"空間斬 ⑤",c:[],n:"P2 打得慢會少一發"},
   {t:"06:52",m:"空間滅斬（狂暴）",c:[]}
  ]},
- {part:"後半 · 本體", sub:"07:34 起", g:"P1 風震魔印", rows:[
-  {t:"07:34",m:"Boss 可選中",c:[]},
-  {t:"07:46",m:"爆震 ①",press:"07:41",c:[["ST","聖光幕簾"],["MT","雪仇"],["D2","牽制"]],nst:"距離 06:10 的聖光幕簾只有 91 秒，轉好就馬上按"},
-  {t:"07:58",m:"魔光 ①＋光牙・閃光炮 ①",c:[]},
-  {t:"08:09",m:"雙牙擊 ①（一二仇 8m 圓形死刑，約 60 萬魔法）",c:[],st:["極致護衛","聖盾陣"],mt:["大星雲","剛玉之心"],n:"讀條 7 秒，08:02 開始讀",nst:"不開神聖領域，留給 13:03 的八連 ③",nmt:"不開超火流星，留給 12:43 的八連 ②"},
-  {t:"08:21",m:"鎧袖一觸 ①",c:[]},
-  {t:"08:31",m:"魔光 ②＋光牙・閃光炮 ②",press:"08:27",c:[["ST","雪仇"],["D1","牽制"],["D3","防守之桑巴"],["D4","昏亂"]],n:"讀條快結束時給，可以覆蓋 08:42 的爆震 ②",nst:"09:29 還要再雪仇，這裡不要拖太晚"},
-  {t:"08:42",m:"爆震 ②",c:[],n:"吃 08:27 那波團減"},
-  {t:"08:56",m:"剛刃一閃 ①（08:51 讀條，炸掉點名者所在平台，要傳送躲）",c:[]},
-  {t:"09:03",m:"風震魔印（09:08 判定：風標記死刑＋土標記分攤＋貪狼之劍）",press:"08:58",c:[["MT","雪仇"]],st:["鐵壁","聖盾陣","MT 被點風：挑釁拿一仇"],mt:["鐵壁","剛玉之心","ST 被點風：挑釁拿一仇"],n:"隨機點一個 T 拿風標記（16m 圓形，約 28 萬魔法），一仇另外吃貪狼之劍的 210° 扇形（約 28 萬物理）。誰被點風標記，另一個 T 就挑釁拿一仇，不讓同一個人吃兩發。兩發都附易傷",nst:"吃貪狼之劍時可以再疊壁壘"},
-  {t:"09:13",m:"風狼陣 → 09:21 塔判定",c:[]}
+ {part:"後半 · 本體", sub:"07:34 起", g:"P1 風震魔印", rules:"<b>魔光</b>：在組別平台照「坦－近戰－遠程－奶」排好。沒被點名就留在原平台躲左右浮游炮。被點名的人照排隊順序：最上面的被點名者往上一格，第二位留在原平台，有第三位就去 C 平台。", rows:[
+  {t:"07:34",pos:"開場全員在 C → 能動就去組別平台",m:"Boss 可選中",c:[],n:"落地先喝藥"},
+  {t:"07:46",pos:"組別平台（MT 組 C左、ST 組 C右）",m:"爆震 ①",press:"07:41",c:[["ST","聖光幕簾"],["MT","雪仇"],["D2","牽制"]],nst:"距離 06:10 的聖光幕簾只有 91 秒，轉好就馬上按"},
+  {t:"07:58",pos:"組別平台排隊 → 結束全員回 C",m:"魔光 ①＋光牙・閃光炮 ①",c:[]},
+  {t:"08:09",pos:"MT 在 C左、ST 在 C右、其他人在 C",m:"雙牙擊 ①（一二仇 8m 圓形死刑，約 60 萬魔法）",c:[],st:["極致護衛","聖盾陣"],mt:["大星雲","剛玉之心"],n:"讀條 7 秒，08:02 開始讀。千萬不要跟坦克站同一個平台",nst:"不開神聖領域，留給 13:03 的八連 ③",nmt:"不開超火流星，留給 12:43 的八連 ②"},
+  {t:"08:21",pos:"全員在 C → 結束回組別平台",m:"鎧袖一觸 ①",c:[]},
+  {t:"08:31",pos:"組別平台排隊",m:"魔光 ②＋光牙・閃光炮 ②",press:"08:27",c:[["ST","雪仇"],["D1","牽制"],["D3","防守之桑巴"],["D4","昏亂"]],n:"讀條快結束時給，可以覆蓋 08:42 的爆震 ②",nst:"09:29 還要再雪仇，這裡不要拖太晚"},
+  {t:"08:42",pos:"組別平台 → 分攤完全員回 C",m:"爆震 ②",c:[],n:"吃 08:27 那波團減。第一次 120 秒爆發"},
+  {t:"08:56",pos:"全員先在 C → 讀條出現立刻離開 C",m:"剛刃一閃 ①（08:51 讀條，炸掉點名者所在平台，要傳送躲）",c:[],n:"剛刃一閃會擊碎 C，風震魔印時場上只剩四個平台"},
+  {t:"09:03",pos:"雙 T 在 Boss 左右平台、其他人在 Boss 後方兩側 → 去紅標 T 的隔壁平台分攤",m:"風震魔印（09:08 判定：風標記死刑＋土標記分攤＋貪狼之劍）",press:"08:58",c:[["MT","雪仇"]],st:["鐵壁","聖盾陣","MT 被點風：挑釁拿一仇"],mt:["鐵壁","剛玉之心","ST 被點風：挑釁拿一仇"],n:"隨機點一個 T 拿風標記（16m 圓形，約 28 萬魔法），一仇另外吃貪狼之劍的 210° 扇形（約 28 萬物理）。誰被點風標記，另一個 T 就挑釁拿一仇，不讓同一個人吃兩發。兩發都附易傷。不用管自己頭上有沒有紅點，全員一律到被點紅標的坦克隔壁平台分攤。分攤很痛，減傷和群盾要下好",nst:"吃貪狼之劍時可以再疊壁壘"},
+  {t:"09:13",pos:"一運分配平台，二二踩塔",m:"風狼陣 → 09:21 塔判定",c:[]}
  ]},
- {g:"P2 颶風之相（一運）", rows:[
+ {g:"P2 颶風之相（一運）", rules:"<b>雙牙暴風擊（常規解法）</b><br>① 開始時大家在組別平台排隊，雙 T 站最前面接線。<br>② 接到線後，所有人回到各自二二站位的平台。<br>③ 接到線的 T 退到後面，跟同平台最後面的 H 分攤圓形；對面平台（T 在 1 號，對面就是 3 號）的近戰 D 靠到最前面，接直線引導。<br>④ 下一輪：T 到隔壁平台，把線傳給隔壁的近戰 D；直線引導也跟著轉到下一個平台。依此類推：<b>分攤 1 → 2 → 3 → 4</b>，<b>引導 3 → 4 → 1 → 2</b>。方向反過來時亦然。<br>平台編號：C左 是 1，順時針依序 左上 2、右上 3、C右 4（見頁首平台圖）。<br>颶風之相期間，傳送後要等約 7 秒才能再傳。圓形分攤後會留下擴大的毒圈，要躲開。", rows:[
   {t:"09:24",m:"魔狼戰形・颶風之相",c:[]},
-  {t:"09:33",m:"雙牙暴風擊 ①",press:"09:29",c:[["ST","雪仇"],["ST","聖光幕簾"],["MT","光之心"],["D2","牽制"]],n:"四連的二二分攤，不是死刑。團減大概蓋到 ②"},
+  {t:"09:33",pos:"組別平台排隊，雙 T 站最前面接線 → 接到線後回二二站位平台（見本段上方規則）",m:"雙牙暴風擊 ①",press:"09:29",c:[["ST","雪仇"],["ST","聖光幕簾"],["MT","光之心"],["D2","牽制"]],n:"四連的二二分攤，不是死刑。團減大概蓋到 ②"},
   {t:"09:40",m:"雙牙暴風擊 ②",c:[]},
   {t:"09:47",m:"雙牙暴風擊 ③",c:[]},
   {t:"09:53",m:"雙牙暴風擊 ④",c:[]},
   {t:"10:03",m:"光牙召喚",c:[]},
-  {t:"10:15",m:"回天動地 ×5＋光牙連擊閃光炮（① 10:15 ② 10:20 ③ 10:24 ④ 10:29 ⑤ 10:33）",c:[]},
-  {t:"10:43",m:"爆震 ③",press:"10:42",c:[["MT","雪仇"],["D1","牽制"],["D3","防守之桑巴"],["D4","昏亂"]]},
-  {t:"10:57",m:"魔光 ③＋光牙・閃光炮 ③",c:[]},
-  {t:"11:08",m:"雙牙擊 ②（一二仇 8m 圓形死刑，約 60 萬魔法）",c:[],st:["極致護衛","聖盾陣"],mt:["大星雲","偽裝","剛玉之心"],n:"11:01 開始讀條",nst:"極致 08:09 用過，到這裡 179 秒，夠",nmt:"大星雲 08:09 用過，到這裡 179 秒，夠"}
+  {t:"10:15",pos:"全員回 C",m:"回天動地 ×5＋光牙連擊閃光炮（① 10:15 ② 10:20 ③ 10:24 ④ 10:29 ⑤ 10:33）",c:[],n:"側中前後前：先看 Boss 順時針還是逆時針、從哪開始。輪到「側」時先在中間等浮游炮出來，再跑到邊邊"},
+  {t:"10:43",pos:"組別平台",m:"爆震 ③",press:"10:42",c:[["MT","雪仇"],["D1","牽制"],["D3","防守之桑巴"],["D4","昏亂"]],n:"120 秒爆發"},
+  {t:"10:57",pos:"組別平台排隊",m:"魔光 ③＋光牙・閃光炮 ③",c:[]},
+  {t:"11:08",pos:"MT 在 C左、ST 在 C右、其他人在 C",m:"雙牙擊 ②（一二仇 8m 圓形死刑，約 60 萬魔法）",c:[],st:["極致護衛","聖盾陣"],mt:["大星雲","偽裝","剛玉之心"],n:"11:01 開始讀條",nst:"極致 08:09 用過，到這裡 179 秒，夠",nmt:"大星雲 08:09 用過，到這裡 179 秒，夠"}
  ]},
- {g:"P3 咒刃之相（二運）", rows:[
+ {g:"P3 咒刃之相（二運）", rules:"<b>獨狼的詛咒</b>：初始位置是奶組在 C、DD 組在 C右、坦組在左上。奶組留 C 不管什麼線都不動。遠線坦往奶組方向移一平台，近線坦往 DD 組方向移一平台。遠線 D 跟坦連不動、跟奶連往反方向移一平台；近線 D 往被連線的方向移一平台。遠線要拉遠，近線要一起移動。", rows:[
   {t:"11:23",m:"魔狼戰形・咒刃之相",c:[]},
-  {t:"11:28",m:"獨狼的詛咒",c:[]},
+  {t:"11:28",pos:"初始：奶組 C、DD 組 C右、坦組左上 → 照線移一個平台（見本段上方規則）",m:"獨狼的詛咒",c:[]},
   {t:"11:38",m:"風狼陣（11:47 踩塔）",c:[]},
-  {t:"11:56",m:"鎧袖一觸 ②",c:[]},
-  {t:"12:09",m:"魔光 ④＋光牙・閃光炮 ④",c:[]}
+  {t:"11:56",pos:"各自散開的平台，躲鋼鐵月環為主",m:"鎧袖一觸 ②",c:[],n:"這次大家是散開的，來不及就不管半場刀（吃易傷沒關係），一定要躲鋼鐵月環"},
+  {t:"12:09",pos:"趕快回組別平台排隊",m:"魔光 ④＋光牙・閃光炮 ④",c:[],n:"躲完鎧袖一觸常有人忘記回組別平台，點名會亂掉"}
  ]},
  {g:"P4 八連光彈", warn:"八連 ② MT 無敵單吃、八連 ③ ST 無敵單吃", rows:[
-  {t:"12:23",m:"八連光彈 ①（全員分攤 ×8）",press:"12:24",c:[["ST","聖光幕簾"],["MT","雪仇"],["MT","光之心"],["D1","牽制"],["D4","昏亂"]]},
-  {t:"12:35",m:"剛刃一閃 ②（炸平台，Boss 傷害提高）",c:[]},
-  {t:"12:43",m:"八連光彈 ②（MT 無敵單吃，30 萬 ×7＋68 萬）",c:[],mt:["超火流星"],nmt:"02:03 用過，早就轉好。吃完血量 1，補師要馬上補"},
-  {t:"12:55",m:"剛刃一閃 ③",c:[]},
-  {t:"13:03",m:"八連光彈 ③（ST 無敵單吃，30 萬 ×7＋68 萬）",c:[],st:["神聖領域"],nst:"05:20 用過，420 秒後約 12:20 轉好。八連第一下前按"},
-  {t:"13:14",m:"剛刃一閃 ④",c:[]},
-  {t:"13:22",m:"八連光彈 ④（雙 T 分攤 ×8，15 萬 ×7＋34 萬）",c:[["ST","雪仇"]],st:["極致護衛","鐵壁","壁壘","聖盾陣","干涉 → MT"],mt:["大星雲","偽裝","鐵壁","剛玉之心"],n:"Boss 已經疊了好幾層傷害提高，雙 T 交滿個人減傷",nst:"干涉在我身上有鐵壁或極致時會多 10% 減傷，先開鐵壁／極致再按干涉。聖盾陣＋干涉一共要 100 量譜，11:08 雙牙擊 ② 之後量譜不要花在別的地方",nmt:"騎士會給你干涉。大星雲、偽裝 11:08 用過，鐵壁 09:03 用過，到這裡都轉好了"},
-  {t:"13:34",m:"剛刃一閃 ⑤",c:[]},
-  {t:"13:42",m:"八連光彈 ⑤（全員分攤 ×8）",c:[["ST","武裝戍衛"],["MT","雪仇"],["D2","牽制"],["D3","防守之桑巴"]],nst:"開武裝戍衛時不能移動，先站好位置再開。雪仇 13:22 交掉了，聖光幕簾 13:54 才轉好，這發只有武裝戍衛"},
+  {t:"12:23",pos:"魔光結束全員立刻回 C",m:"八連光彈 ①（全員分攤 ×8）",press:"12:24",c:[["ST","聖光幕簾"],["MT","雪仇"],["MT","光之心"],["D1","牽制"],["D4","昏亂"]]},
+  {t:"12:35",pos:"等讀條出現再走到下一個平台",m:"剛刃一閃 ②（炸平台，Boss 傷害提高）",c:[]},
+  {t:"12:43",pos:"塔出現：除了 MT，其他人立刻去下一個平台",m:"八連光彈 ②（MT 無敵單吃，30 萬 ×7＋68 萬）",c:[],mt:["超火流星"],nmt:"02:03 用過，早就轉好。吃完血量 1，補師要馬上補",n:"到下一個平台再開 120 秒爆發＋吃藥"},
+  {t:"12:55",pos:"等讀條出現再走",m:"剛刃一閃 ③",c:[]},
+  {t:"13:03",pos:"塔出現：除了 ST，其他人立刻去下一個平台",m:"八連光彈 ③（ST 無敵單吃，30 萬 ×7＋68 萬）",c:[],st:["神聖領域"],nst:"05:20 用過，420 秒後約 12:20 轉好。八連第一下前按"},
+  {t:"13:14",pos:"等讀條出現再走",m:"剛刃一閃 ④",c:[]},
+  {t:"13:22",pos:"塔出現：除了雙 T，其他人立刻去下一個平台",m:"八連光彈 ④（雙 T 分攤 ×8，15 萬 ×7＋34 萬）",c:[["ST","雪仇"]],st:["極致護衛","鐵壁","壁壘","聖盾陣","干涉 → MT"],mt:["大星雲","偽裝","鐵壁","剛玉之心"],n:"Boss 已經疊了好幾層傷害提高，雙 T 交滿個人減傷",nst:"干涉在我身上有鐵壁或極致時會多 10% 減傷，先開鐵壁／極致再按干涉。聖盾陣＋干涉一共要 100 量譜，11:08 雙牙擊 ② 之後量譜不要花在別的地方",nmt:"騎士會給你干涉。大星雲、偽裝 11:08 用過，鐵壁 09:03 用過，到這裡都轉好了"},
+  {t:"13:34",pos:"等讀條出現再走",m:"剛刃一閃 ⑤",c:[]},
+  {t:"13:42",pos:"全員一起吃",m:"八連光彈 ⑤（全員分攤 ×8）",c:[["ST","武裝戍衛"],["MT","雪仇"],["D2","牽制"],["D3","防守之桑巴"]],nst:"開武裝戍衛時不能移動，先站好位置再開。雪仇 13:22 交掉了，聖光幕簾 13:54 才轉好，這發只有武裝戍衛"},
   {t:"13:49",m:"剛刃一閃・終 讀條 → 14:00 狂暴",c:[]}
  ]}
 ];
@@ -321,8 +375,8 @@ const roles={
 
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
 const RN={MT:"MT",ST:"ST",D1:"D1",D2:"D2",D3:"D3",D4:"D4"};
-let role="team", mode="all", view="full", span="all";
-try{role=localStorage.getItem("m8s-role")||role;mode=localStorage.getItem("m8s-mode")||mode;view=localStorage.getItem("m8s-view")||view;span=localStorage.getItem("m8s-span")||span}catch(e){}
+let role="team", mode="all", view="full", span="all", posv="on";
+try{role=localStorage.getItem("m8s-role")||role;mode=localStorage.getItem("m8s-mode")||mode;view=localStorage.getItem("m8s-view")||view;span=localStorage.getItem("m8s-span")||span;posv=localStorage.getItem("m8s-pos")||posv}catch(e){}
 const h=(location.hash||"").slice(1); if(h==="team"||h==="st"||h==="mt"||/^d[1-4]$/.test(h)) role=h;
 if(!(role==="team"||role==="st"||role==="mt"||/^d[1-4]$/.test(role))) role="team";
 
@@ -359,6 +413,7 @@ function renderTimeline(){
     const gt=el("div","gtitle"+(newP?" pstart "+pn.toLowerCase():""));
     if(newP){gt.append(el("span","pn",pn),document.createTextNode(rest))} else gt.textContent=grp.g;
     g.append(gt);
+    if(grp.rules){const rb=el("div","rules");rb.innerHTML=grp.rules;g.append(rb)}
     if(grp.warn) g.append(el("div","warnbox",grp.warn));
     for(const r of rows){
       const rel=relevant(r);
@@ -378,6 +433,7 @@ function renderTimeline(){
       }
       for(const sk of mySelf(r)){const ch=el("span","chip mine-self");ch.append(el("span","r","個人"),document.createTextNode(sk));chips.append(ch)}
       if(chips.children.length) b.append(chips);
+      if(r.pos){const pp=el("div","pos");pp.append(el("span","pk","站位"),document.createTextNode(r.pos));b.append(pp)}
       if(r.n) b.append(el("div","note",r.n));
       const rn=role==="st"?r.nst:role==="mt"?r.nmt:null;
       if(rn) b.append(el("div","note role",rn));
@@ -432,6 +488,8 @@ function renderLegend(){
 function render(){
   document.body.dataset.role=role;
   document.body.classList.toggle("compact",view==="compact");
+  document.body.classList.toggle("nopos",posv==="off");
+  for(const b of document.querySelectorAll("[data-pos]")) b.setAttribute("aria-pressed",b.dataset.pos===posv);
   for(const b of document.querySelectorAll("[data-view]")) b.setAttribute("aria-pressed",b.dataset.view===view);
   for(const b of document.querySelectorAll("[data-span]")) b.setAttribute("aria-pressed",b.dataset.span===span);
   document.getElementById("h-role").textContent=roles[role].h;
@@ -439,11 +497,12 @@ function render(){
   for(const b of document.querySelectorAll("[data-mode]")) b.setAttribute("aria-pressed",b.dataset.mode===mode);
   document.getElementById("m-mit").textContent=role==="team"?"只看要下團減的":"只看我要按的";
   renderLegend(); renderMine(); renderTimeline();
-  try{localStorage.setItem("m8s-role",role);localStorage.setItem("m8s-mode",mode);localStorage.setItem("m8s-view",view);localStorage.setItem("m8s-span",span)}catch(e){}
+  try{localStorage.setItem("m8s-role",role);localStorage.setItem("m8s-mode",mode);localStorage.setItem("m8s-view",view);localStorage.setItem("m8s-span",span);localStorage.setItem("m8s-pos",posv)}catch(e){}
 }
 for(const b of document.querySelectorAll("button[data-role]")) b.onclick=()=>{role=b.dataset.role;render()};
 for(const b of document.querySelectorAll("button[data-mode]")) b.onclick=()=>{mode=b.dataset.mode;render()};
 for(const b of document.querySelectorAll("button[data-view]")) b.onclick=()=>{view=b.dataset.view;render()};
+for(const b of document.querySelectorAll("button[data-pos]")) b.onclick=()=>{posv=b.dataset.pos;render()};
 for(const b of document.querySelectorAll("button[data-span]")) b.onclick=()=>{span=b.dataset.span;render()};
 render();
 </script>
