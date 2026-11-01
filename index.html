@@ -335,6 +335,8 @@ body.compact .tpi{width:18px;height:18px}
 .empty{font-size:13px;color:var(--muted)}
 
 /* compact view: one line per mechanic, multi-column on wide screens for a side monitor */
+body.compact.fit .wrap{max-width:none}
+body.fit .rules,body.fit .arena{display:none!important}
 body.compact .wrap{max-width:1500px;padding-block:12px 24px;gap:10px}
 body.compact header .sub,body.compact .mine,body.compact .endnote,body.compact .note,body.compact .warnbox{display:none!important}
 body.compact header .eyebrow{display:none}
@@ -378,8 +380,9 @@ body.compact .chip .r{font-size:11px;padding:0 5px}
       <button type="button" class="relbtn" id="rel-btn" aria-haspopup="dialog" aria-controls="release" title="更新紀錄"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="reldot"></span></button>
     </div>
   <div class="relpop" id="release" role="dialog" aria-label="更新紀錄" hidden>
-    <div class="relhead"><b>更新紀錄</b><span>最新 v1.4・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
+    <div class="relhead"><b>更新紀錄</b><span>最新 v1.5・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
     <ol>
+      <li><b>v1.5</b><time>11/01</time><ul><li>版面新增「一頁塞滿」：精簡版自動選欄數並縮放，整段時間軸塞進一個畫面</li></ul></li>
       <li><b>v1.4</b><time>11/01</time><ul><li>爆震名稱加上（大地槌）</li><li>補充說明改成 # 小標籤（#44分攤、#雙T死刑、#炸平台、#22分組 等）</li><li>招與招之間加上傳送陣狀態線（紅 7 秒／綠 2 秒）</li><li>P2：塔一消失就去組別平台集合</li><li>P3：鎧袖一觸 ② Boss 轉面向後，C 改成 Boss 正面</li><li>P4：換平台一律往左走（順時針）</li><li>P2／P3 傳送陣恢復 2 秒的時機（回天動地、鎧袖一觸 ② 打完後）</li><li>右上角加上更新紀錄</li><li>右上角加上主題選單：淺色、深色、櫻花、抹茶、深海、高對比，特別版睡覺數羊、手帳、海島、水墨、武士道、電競 RGB、CyberPunk</li><li>本體平台位置改成可收合（預設收合）</li><li>第一次打開預設精簡版面，之後記住每個人的選擇</li></ul></li>
       <li><b>v1.3</b><time>10/29</time><ul><li>回天動地加上站位圖</li></ul></li>
       <li><b>v1.2</b><time>10/29</time><ul><li>本體機制旁加上「看圖」，滑鼠指過去或點一下會跳出站位圖（猫猫窝攻略组機制速覽）</li></ul></li>
@@ -418,6 +421,7 @@ body.compact .chip .r{font-size:11px;padding:0 5px}
       <span class="lbl">版面</span>
       <button id="v-full" data-view="full" aria-pressed="true">詳細</button>
       <button id="v-compact" data-view="compact" aria-pressed="false">精簡（副螢幕）</button>
+      <button id="v-fit" data-view="fit" aria-pressed="false" title="精簡版，並自動縮放到一個畫面放得下">一頁塞滿</button>
     </div>
     <div class="bar" role="group" aria-label="站位">
       <span class="lbl">站位</span>
@@ -708,7 +712,8 @@ function renderLegend(){
 
 function render(){
   document.body.dataset.role=role;
-  document.body.classList.toggle("compact",view==="compact");
+  document.body.classList.toggle("compact",view==="compact"||view==="fit");
+  document.body.classList.toggle("fit",view==="fit");
   document.body.classList.toggle("nopos",posv==="off");
   for(const b of document.querySelectorAll("[data-pos]")) b.setAttribute("aria-pressed",b.dataset.pos===posv);
   for(const b of document.querySelectorAll("[data-view]")) b.setAttribute("aria-pressed",b.dataset.view===view);
@@ -717,7 +722,7 @@ function render(){
   for(const b of document.querySelectorAll("[data-role]")) if(b.tagName==="BUTTON") b.setAttribute("aria-pressed",b.dataset.role===role);
   for(const b of document.querySelectorAll("[data-mode]")) b.setAttribute("aria-pressed",b.dataset.mode===mode);
   document.getElementById("m-mit").textContent=role==="team"?"只看要下團減的":"只看我要按的";
-  renderLegend(); renderMine(); renderTimeline();
+  renderLegend(); renderMine(); renderTimeline(); fitTl();
   try{localStorage.setItem("m8s-role",role);localStorage.setItem("m8s-mode",mode);localStorage.setItem("m8s-view",view);localStorage.setItem("m8s-span",span);localStorage.setItem("m8s-pos",posv)}catch(e){}
 }
 for(const b of document.querySelectorAll("button[data-role]")) b.onclick=()=>{role=b.dataset.role;render()};
@@ -753,6 +758,25 @@ document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.clos
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".figbtn");if(b){if(figPinned===b){figHide()}else{figPinned=b;figShow(b)}return}if(!figPop.contains(e.target))figHide()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")figHide()});
 addEventListener("scroll",()=>{if(!figPop.hidden)figHide()},{passive:true});
+
+/* 一頁塞滿：自動選欄數＋縮放，讓時間軸塞進一個畫面 */
+function fitTl(){const tl=document.getElementById("tl");
+  tl.style.zoom="";tl.style.columnCount="";tl.style.columnWidth="";
+  if(view!=="fit")return;
+  const top=tl.getBoundingClientRect().top+scrollY-scrollY; const avail=innerHeight-tl.getBoundingClientRect().top-10;
+  const W=tl.clientWidth; let best={z:0,c:1};
+  if(avail<200)return;
+  for(let c=1;c<=5;c++){
+    tl.style.columnCount=c;tl.style.columnWidth="auto";
+    const fits=z=>{tl.style.zoom=z;return tl.getBoundingClientRect().height<=avail};
+    let lo=0.4,hi=1;
+    if(fits(1)){lo=1}else{if(!fits(lo))continue;for(let k=0;k<9;k++){const m=(lo+hi)/2;if(fits(m))lo=m;else hi=m}}
+    if(W/lo/c<300)continue;
+    if(lo>best.z+0.005)best={z:lo,c};
+  }
+  tl.style.columnCount=best.c;tl.style.columnWidth="auto";tl.style.zoom=best.z||0.45;
+}
+let fitT=null;addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(fitTl,120)});
 render();
 
 (function(){const a=document.getElementById("arena"),t=document.getElementById("arena-tg");
@@ -795,7 +819,7 @@ function fxSpawn(skin){const box=document.getElementById("fx");box.textContent="
 
 /* release notes popup */
 (function(){const b=document.getElementById("rel-btn"),pop=document.getElementById("release"),dot=b.querySelector(".reldot");
-  const VER="v1.4"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
+  const VER="v1.5"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
   function open(o){pop.hidden=!o;b.setAttribute("aria-expanded",o);if(o){dot.hidden=true;try{localStorage.setItem("m8s-relseen",VER)}catch(e){}}}
   b.onclick=e=>{e.stopPropagation();open(pop.hidden)};
   document.getElementById("rel-x").onclick=()=>{open(false);b.focus()};
