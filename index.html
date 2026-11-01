@@ -403,10 +403,48 @@ body.compact .row.plain.alt{background:color-mix(in srgb,var(--chip) 85%,var(--p
 .pos .pk svg{width:13px;height:13px}
 body.compact .pos .pk{width:16px;height:16px}
 body.compact .pos .pk svg{width:11px;height:11px}
+
+.sel{font:inherit;font-size:13px;padding:6px 30px 6px 12px;border-radius:999px;border:1px solid var(--st-ring);background:var(--st-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.6'/%3E%3C/svg%3E") right 11px center/10px no-repeat;color:var(--st-fg);font-weight:700;cursor:pointer;-webkit-appearance:none;appearance:none}
+.sel:focus-visible{outline:2px solid var(--st);outline-offset:2px}
+.bar #edit-btn[aria-pressed="true"]{background:var(--self);border-color:var(--self);color:var(--on-badge);font-weight:700}
+.r.H1,.r.H2{background:var(--heal,#2f9a55)}
+.edbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;background:var(--self-bg);color:var(--self-fg);border:1px solid var(--self);border-radius:12px;padding:10px 14px;font-size:13px}
+.edbar .edtxt{min-width:0;flex:1 1 320px}
+.edbar #ed-count{margin-left:6px;font-weight:700}
+.edbtns{display:flex;flex-wrap:wrap;gap:6px}
+.edbtns button,.pop button,.modal button{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer}
+.edbtns button.primary,.pop button.primary,.modal button.primary{background:var(--self);border-color:var(--self);color:var(--on-badge);font-weight:700}
+.edbtns button.danger{background:var(--warn);border-color:var(--warn);color:#fff}
+.chip .chipx{margin-left:4px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;opacity:.6;cursor:pointer;font-size:13px;line-height:1}
+.chip .chipx:hover,.chip .chipx:focus-visible{opacity:1;background:var(--warn);color:#fff;outline:none}
+.chipadd{font:inherit;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;border:1.5px dashed var(--self);background:transparent;color:var(--self);cursor:pointer}
+.chipadd:hover,.chipadd:focus-visible{background:var(--self-bg);outline:none}
+.pop{position:fixed;z-index:50;width:min(340px,calc(100vw - 24px));max-height:min(80vh,560px);overflow:auto;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 36px rgba(0,0,0,.3);padding:14px;font-size:13px}
+.pop h4{margin:0 0 10px;font-size:14px}
+.pop label{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;color:var(--muted);font-size:12px}
+.pop select,.pop input[type=text],.modal textarea{font:inherit;font-size:13px;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+.pop select:focus-visible,.pop input:focus-visible,.modal textarea:focus-visible{outline:2px solid var(--self);outline-offset:1px}
+.pop .row2{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center;margin-bottom:8px}
+.pop .row2 b{font-family:var(--f-disp)}
+.pop .types{display:flex;gap:14px;margin:-2px 0 10px;color:var(--fg);font-size:13px}
+.pop .types label{flex-direction:row;align-items:center;gap:5px;margin:0;color:var(--fg);font-size:13px}
+.pop .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:4px}
+.pop .hint2{font-size:11px;color:var(--muted);margin:-4px 0 10px}
+.modal{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:16px}
+.modal-box{width:min(520px,100%);background:var(--panel);color:var(--fg);border-radius:14px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.modal-box h3{margin:0 0 6px;font-size:16px}
+.modal-box p{margin:0 0 10px;font-size:13px;color:var(--muted)}
+.modal-box textarea{width:100%;box-sizing:border-box;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.modal-btns{display:flex;justify-content:flex-end;gap:8px;margin-top:10px}
+.chip.edself{background:var(--self-bg);color:var(--self-fg);box-shadow:0 0 0 1.5px var(--self) inset}
+.cdwarn{color:var(--warn);font-weight:700}
 </style>
 
 <div class="fx" id="fx" aria-hidden="true"></div>
 <div class="toast" id="toast" role="status" hidden></div>
+<div class="pop" id="party-pop" role="dialog" aria-label="隊伍職業" hidden></div>
+<div class="pop" id="add-pop" role="dialog" aria-label="新增減傷" hidden></div>
+<div class="modal" id="ed-modal" role="dialog" aria-modal="true" aria-labelledby="ed-modal-h" hidden><div class="modal-box"><h3 id="ed-modal-h"></h3><p id="ed-modal-p"></p><textarea id="ed-modal-ta" rows="5" spellcheck="false"></textarea><div class="modal-btns"><button type="button" id="ed-modal-cancel">取消</button><button type="button" id="ed-modal-ok" class="primary"></button></div></div></div>
 <div class="wrap">
   <header class="hd">
     <div class="hdtools">
@@ -418,8 +456,9 @@ body.compact .pos .pk svg{width:11px;height:11px}
       <button type="button" class="relbtn" id="rel-btn" aria-haspopup="dialog" aria-controls="release" title="更新紀錄"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="reldot"></span></button>
     </div>
   <div class="relpop" id="release" role="dialog" aria-label="更新紀錄" hidden>
-    <div class="relhead"><b>更新紀錄</b><span>最新 v1.5.3・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
+    <div class="relhead"><b>更新紀錄</b><span>最新 v1.6・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
     <ol>
+      <li><b>v1.6</b><time>11/01</time><ul><li>職責改成選單，加上 H1、H2</li><li>隊伍職業可選 FF14 全職業</li><li>編輯減傷：自己加減技能、按鍵時間，自動檢查 CD</li><li>分享碼匯出／匯入</li></ul></li>
       <li><b>v1.5.3</b><time>11/01</time><ul><li>站位改成跑步小人圖示</li></ul></li>
       <li><b>v1.5.2</b><time>11/01</time><ul><li>灰色招式加深，各主題更清楚</li><li>CyberPunk 拿掉大樓、武士道改一把刀</li><li>修正特別版主題的開關樣式</li></ul></li>
       <li><b>v1.5.1</b><time>11/01</time><ul><li>匯出圖片</li><li>團減／個人減傷可分開隱藏</li><li>招式交錯底色</li><li>一頁塞滿加速、加 ? 說明</li></ul></li>
@@ -439,13 +478,9 @@ body.compact .pos .pk svg{width:11px;height:11px}
   <div class="controls">
     <div class="bar" role="group" aria-label="看誰的">
       <span class="lbl">職責</span>
-      <button id="r-team" data-role="team" aria-pressed="true">全隊</button>
-      <button id="r-st" data-role="st" aria-pressed="false">ST 騎士</button>
-      <button id="r-mt" data-role="mt" aria-pressed="false">MT 絕槍</button>
-      <button id="r-d1" data-role="d1" aria-pressed="false">D1 武僧</button>
-      <button id="r-d2" data-role="d2" aria-pressed="false">D2 武士</button>
-      <button id="r-d3" data-role="d3" aria-pressed="false">D3 舞者</button>
-      <button id="r-d4" data-role="d4" aria-pressed="false">D4 召喚</button>
+      <select id="role-sel" class="sel" aria-label="選擇職責"></select>
+      <button type="button" id="party-btn" aria-haspopup="dialog">隊伍職業</button>
+      <button type="button" id="edit-btn" aria-pressed="false">編輯減傷</button>
     </div>
     <div class="bar" role="group" aria-label="顯示範圍">
       <span class="lbl">顯示</span>
@@ -494,6 +529,16 @@ body.compact .pos .pk svg{width:11px;height:11px}
     <p class="lead" id="mine-lead"></p>
     <div id="mine-list"></div>
     <div class="cds" id="cds"></div>
+  </section>
+
+  <section class="edbar" id="edbar" hidden aria-label="編輯減傷">
+    <div class="edtxt"><b>編輯減傷中</b>　每一招下面按「＋ 減傷」新增，按技能旁的 × 刪除。改動只存在你自己的瀏覽器。<span id="ed-count"></span></div>
+    <div class="edbtns">
+      <button type="button" id="ed-export">匯出分享碼</button>
+      <button type="button" id="ed-import">匯入分享碼</button>
+      <button type="button" id="ed-reset">還原預設</button>
+      <button type="button" id="ed-done" class="primary">完成</button>
+    </div>
   </section>
 
   <main class="tl" id="tl"></main>
@@ -639,15 +684,90 @@ const roles={
 };
 
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
-const RN={MT:"MT",ST:"ST",D1:"D1",D2:"D2",D3:"D3",D4:"D4"};
+const RN={MT:"MT",ST:"ST",H1:"H1",H2:"H2",D1:"D1",D2:"D2",D3:"D3",D4:"D4"};
 let role="team", mode="all", view="compact", span="all", posv="on", mitv="on", selfv="on";
 try{role=localStorage.getItem("m8s-role")||role;mode=localStorage.getItem("m8s-mode")||mode;view=localStorage.getItem("m8s-view")||view;span=localStorage.getItem("m8s-span")||span;posv=localStorage.getItem("m8s-pos")||posv;mitv=localStorage.getItem("m8s-mit")||mitv;selfv=localStorage.getItem("m8s-self")||selfv}catch(e){}
-const h=(location.hash||"").slice(1); if(h==="team"||h==="st"||h==="mt"||/^d[1-4]$/.test(h)) role=h;
-if(!(role==="team"||role==="st"||role==="mt"||/^d[1-4]$/.test(role))) role="team";
+const VALID_ROLE=x=>x==="team"||/^(mt|st|h[12]|d[1-4])$/.test(x);
+const h=(location.hash||"").slice(1); if(VALID_ROLE(h)) role=h;
+if(!VALID_ROLE(role)) role="team";
+
+
+/* ===== 職業與技能 ===== */
+const SLOTS=["MT","ST","H1","H2","D1","D2","D3","D4"];
+const ROLE_SK={
+ tank:[["雪仇",60,"team"],["鐵壁",90,"self"],["挑釁",30,"self"],["退避",120,"self"]],
+ healer:[],
+ melee:[["牽制",90,"team"],["內丹",120,"self"],["浴血",90,"self"]],
+ ranged:[],
+ caster:[["昏亂",90,"team"]]};
+const JOBS={
+ PLD:{n:"騎士",s:"騎士",r:"tank",sk:[["聖光幕簾",90,"team"],["武裝戍衛",120,"team"],["極致護衛",120,"self"],["壁壘",90,"self"],["聖盾陣",5,"self"],["干涉",10,"self"],["保護",120,"self"],["神聖領域",420,"self"]]},
+ WAR:{n:"戰士",s:"戰士",r:"tank",sk:[["擺脫",90,"team"],["戮罪",120,"self"],["戰慄",90,"self"],["原初的血氣",25,"self"],["原初的勇猛",25,"self"],["泰然自若",60,"self"],["死鬥",240,"self"]]},
+ DRK:{n:"暗黑騎士",s:"暗黑",r:"tank",sk:[["暗黑佈道",90,"team"],["暗影衛",120,"self"],["棄明投暗",60,"self"],["至黑之夜",15,"self"],["獻奉",60,"self"],["行屍走肉",300,"self"]]},
+ GNB:{n:"絕槍戰士",s:"絕槍",r:"tank",sk:[["光之心",90,"team"],["大星雲",120,"self"],["偽裝",90,"self"],["剛玉之心",25,"self"],["極光",60,"self"],["超火流星",360,"self"]]},
+ WHM:{n:"白魔法師",s:"白魔",r:"healer",sk:[["節制",120,"team"],["庇護所",90,"team"],["禮儀之鈴",180,"team"],["全大赦",60,"team"],["水流幕",60,"self"],["神祝禱",30,"self"],["神名",60,"self"],["天賜祝福",180,"self"]]},
+ SCH:{n:"學者",s:"學者",r:"healer",sk:[["野戰治療陣",30,"team"],["疾風怒濤之計",120,"team"],["展開戰術",90,"team"],["熾天召喚",120,"team"],["異想的幻光",120,"team"],["秘策",60,"team"],["意氣軒昂之策",0,"team"],["生命回生法",60,"self"],["鼓舞激勵之策",0,"self"]]},
+ AST:{n:"占星術士",s:"占星",r:"healer",sk:[["中間學派",120,"team"],["大宇宙",180,"team"],["天星沖日",60,"team"],["命運之輪",60,"team"],["地星",60,"team"],["天宮圖",60,"team"],["擢升",60,"self"],["天星交錯",30,"self"]]},
+ SGE:{n:"賢者",s:"賢者",r:"healer",sk:[["堅角清汁",30,"team"],["整體論",120,"team"],["泛輸血",120,"team"],["自生Ⅱ",60,"team"],["智慧之愛",180,"team"],["均衡預後",0,"team"],["輸血",120,"self"],["寄生清汁",45,"self"],["混合",60,"self"]]},
+ MNK:{n:"武僧",s:"武僧",r:"melee",sk:[["真言",90,"team"]]},
+ DRG:{n:"龍騎士",s:"龍騎",r:"melee",sk:[]},
+ NIN:{n:"忍者",s:"忍者",r:"melee",sk:[["殘影",120,"self"]]},
+ SAM:{n:"武士",s:"武士",r:"melee",sk:[["天眼通",15,"self"]]},
+ RPR:{n:"釤鐮客",s:"釤鐮",r:"melee",sk:[["神秘紋",30,"self"]]},
+ VPR:{n:"蝰蛇劍士",s:"蝰蛇",r:"melee",sk:[]},
+ BRD:{n:"吟遊詩人",s:"詩人",r:"ranged",sk:[["行吟",90,"team"],["大地神的抒情戀歌",120,"team"]]},
+ MCH:{n:"機工士",s:"機工",r:"ranged",sk:[["策動",90,"team"],["武裝解除",120,"team"]]},
+ DNC:{n:"舞者",s:"舞者",r:"ranged",sk:[["防守之桑巴",90,"team"],["即興表演",120,"team"],["治療之華爾茲",60,"team"]]},
+ BLM:{n:"黑魔法師",s:"黑魔",r:"caster",sk:[["魔罩",120,"self"]]},
+ SMN:{n:"召喚士",s:"召喚",r:"caster",sk:[["守護之光",60,"self"]]},
+ RDM:{n:"赤魔法師",s:"赤魔",r:"caster",sk:[["抗死",120,"team"]]},
+ PCT:{n:"繪靈法師",s:"繪靈",r:"caster",sk:[["坦培拉塗層",120,"self"],["坦培拉油膏",120,"team"]]}};
+const JOB_GROUPS=[["坦克",["PLD","WAR","DRK","GNB"]],["補師",["WHM","SCH","AST","SGE"]],["近戰",["MNK","DRG","NIN","SAM","RPR","VPR"]],["遠程物理",["BRD","MCH","DNC"]],["魔法",["BLM","SMN","RDM","PCT"]]];
+const DEF_PARTY={MT:"GNB",ST:"PLD",H1:"AST",H2:"SCH",D1:"MNK",D2:"SAM",D3:"DNC",D4:"SMN"};
+function skillsOf(code){const j=JOBS[code];if(!j)return [];return j.sk.concat(ROLE_SK[j.r]||[])}
+
+/* ===== 自訂資料（只存在這個瀏覽器） ===== */
+let custom={v:1,party:{},rows:{},press:{}};
+try{const t=JSON.parse(localStorage.getItem("m8s-custom")||"null");if(t&&t.v===1)custom={v:1,party:t.party||{},rows:t.rows||{},press:t.press||{}}}catch(e){}
+function saveCustom(){try{localStorage.setItem("m8s-custom",JSON.stringify(custom))}catch(e){}}
+function jobOf(slot){return custom.party[slot]||DEF_PARTY[slot]}
+function slotLabel(slot){const j=JOBS[jobOf(slot)];return slot+" "+(j?j.s:"")}
+function isEdited(){return Object.keys(custom.rows).length+Object.keys(custom.press).length>0}
+
+(function prep(){const seen={};let pi=0;
+  for(const grp of data){if(grp.part)pi++;for(const r of grp.rows){
+    let id=pi+"-"+r.t; if(seen[id]){seen[id]++;id+="#"+seen[id]}else seen[id]=1; r._id=id; r._press=r.press||null;
+    const L=(r.c||[]).map(([s,k])=>({s,k,t:"team"}));
+    for(const sl of SLOTS){const a=r[sl.toLowerCase()];if(Array.isArray(a))for(const k of a)L.push({s:sl,k,t:"self"})}
+    r._def=L;}}})();
+function assignOf(r){return custom.rows[r._id]||r._def}
+function applyAssign(){for(const grp of data)for(const r of grp.rows){const L=assignOf(r);
+  r.c=L.filter(x=>x.t==="team").map(x=>[x.s,x.k]);
+  for(const sl of SLOTS)r[sl.toLowerCase()]=L.filter(x=>x.t==="self"&&x.s===sl).map(x=>x.k);
+  r.press=(r._id in custom.press)?(custom.press[r._id]||null):r._press;}}
+applyAssign();
+let editing=false;
+
+/* 角色資訊（標題、說明、CD 檢查） */
+const secOfT=t=>{const m=String(t||"").match(/(\d+):(\d+)/);return m?(+m[1])*60+(+m[2]):null};
+const fmtS=x=>String(Math.floor(x/60)).padStart(2,"0")+":"+String(x%60).padStart(2,"0");
+function autoCD(slot){const code=jobOf(slot),sk=skillsOf(code),uses={};
+  for(const grp of data)for(const r of grp.rows)for(const x of assignOf(r)){if(x.s!==slot)continue;
+    const hit=sk.filter(q=>x.k.includes(q[0])).sort((a,b)=>b[0].length-a[0].length)[0];if(!hit)continue;
+    if(/持續中/.test(x.k))continue;
+    const t=secOfT(x.t==="team"&&r.press?r.press:r.t);if(t==null)continue;(uses[hit[0]]=uses[hit[0]]||{cd:hit[1],ts:[]}).ts.push(t)}
+  const out=[];for(const [n,u] of Object.entries(uses)){u.ts.sort((a,b)=>a-b);let warn=[];
+    for(let i=1;i<u.ts.length;i++){const g=u.ts[i]-u.ts[i-1];if(u.cd>0&&g<u.cd)warn.push(`${fmtS(u.ts[i-1])} → ${fmtS(u.ts[i])} 只隔 ${g} 秒`)}
+    out.push(`<b>${n}</b>（${u.cd?u.cd+"s":"GCD"}）${u.ts.map(fmtS).join(" → ")}`+(warn.length?`　<span class="cdwarn">CD 不夠：${warn.join("、")}</span>`:""))}
+  return out.length?out:["目前沒有排到這個職責的技能。按上面的「編輯減傷」可以自己加。"]}
+function roleInfo(role){if(role==="team")return {h:"· 全隊"};
+  const S=role.toUpperCase(),j=JOBS[jobOf(S)]||{n:"",s:""};
+  const hand=roles[role]&&roles[role].cds&&!isEdited()&&jobOf(S)===DEF_PARTY[S]?roles[role].cds:null;
+  return {h:"· "+S+" "+j.s,title:j.n+" "+S+" 的按鍵順序",lead:"金色是排給 "+S+" 的團減，青綠色是個人減傷。"+(hand?"":"下面的 CD 檢查是照技能冷卻時間自動算的。"),cds:hand||autoCD(S)}}
 
 function myTeam(r){const R=role.toUpperCase();return r.c.filter(x=>x[0]===R)}
 function mySelf(r){return role==="team"?[]:(r[role]||[])}
-function plainMode(){return mitv!=="on"&&!((role==="st"||role==="mt")&&selfv==="on")}
+function plainMode(){return !editing&&mitv!=="on"&&!(role!=="team"&&selfv==="on")}
 function relevant(r){if(plainMode())return true;
   const t=mitv==="on"?(role==="team"?r.c.length:myTeam(r).length):0;
   const s=selfv==="on"?mySelf(r).length:0;return (t+s)>0}
@@ -674,7 +794,7 @@ function renderTimeline(){
     if(grp.part){pi++;lastP=""}
     if(span!=="all"&&String(pi)!==span) continue;
     if(grp.part){const hh=el("h2","part",grp.part);if(grp.sub)hh.append(el("small",null,grp.sub));tl.append(hh)}
-    const rows=grp.rows.filter(r=>mode==="all"||relevant(r)||r.tp);
+    const rows=grp.rows.filter(r=>editing||mode==="all"||relevant(r)||r.tp);
     if(!rows.length) continue;
     const g=el("section","group");
     const pn=grp.g.split(" ")[0], rest=grp.g.slice(pn.length+1);
@@ -685,13 +805,13 @@ function renderTimeline(){
     if(grp.rules){const rb=el("div","rules");rb.innerHTML=grp.rules;g.append(rb)}
     if(grp.warn) g.append(el("div","warnbox",grp.warn));
     for(const r of rows){
-      if(!(mode==="all"||relevant(r))){ g.append(tpDiv(r.tp)); continue; }
+      if(!(editing||mode==="all"||relevant(r))){ g.append(tpDiv(r.tp)); continue; }
       const rel=relevant(r);
       const row=el("div","row"+(plainMode()?" plain":(rel?" hit":" quiet"))+((zi++)%2?" alt":""));
       row.append(el("time",null,r.t));
       const b=el("div","body");
       const mh=el("div","mech",(view==="compact"||view==="fit")?shortName(r):r.m); for(const h of hintsOf(r)) mh.append(el("span","hint","#"+h)); {const fk=figOf(r); if(fk){const fb=el("button","figbtn","看圖");fb.type="button";fb.dataset.fig=fk;fb.dataset.alt=r.m+" 的站位圖";mh.append(fb)}}
-      if(mitv==="on" && r.press && (role==="team"?r.c.length:myTeam(r).length)) mh.append(el("span","press","軸 "+r.press+" 按"));
+      if((editing||mitv==="on") && r.press && (editing||(role==="team"?r.c.length:myTeam(r).length))) mh.append(el("span","press","軸 "+r.press+" 按"));
       b.append(mh);
       const chips=el("div","chips");
       const sorted=[...r.c].sort((a,b)=>(b[0]===R)-(a[0]===R));
@@ -702,6 +822,11 @@ function renderTimeline(){
         chips.append(ch);
       }
       if(selfv==="on") for(const sk of mySelf(r)){const ch=el("span","chip mine-self");ch.append(el("span","r","個人"),document.createTextNode(sk));chips.append(ch)}
+      if(editing){chips.textContent="";assignOf(r).forEach((x,i)=>{
+          const ch=el("span","chip"+(x.t==="self"?" edself":""));
+          ch.append(el("span","r "+x.s,x.s),document.createTextNode(x.k+(x.t==="self"?"（個人）":"")));
+          const del=el("button","chipx","×");del.type="button";del.title="刪除";del.setAttribute("aria-label","刪除 "+x.s+" "+x.k);del.onclick=()=>editRemove(r,i);ch.append(del);chips.append(ch)});
+        const add=el("button","chipadd","＋ 減傷");add.type="button";add.onclick=()=>openAdd(r,add);chips.append(add)}
       if(chips.children.length) b.append(chips);
       if(r.pos){const pp=el("div","pos");const ic=el("span","pk");ic.innerHTML=RUNSVG;ic.title="站位";ic.setAttribute("role","img");ic.setAttribute("aria-label","站位");pp.append(ic,document.createTextNode(r.pos));b.append(pp)}
       if(r.n) b.append(el("div","note",r.n));
@@ -717,7 +842,7 @@ function renderMine(){
   const box=document.getElementById("mine");
   if(role==="team"){box.hidden=true;return}
   box.hidden=false;
-  const cfg=roles[role];
+  const cfg=roleInfo(role);
   document.getElementById("mine-h").textContent=cfg.title;
   document.getElementById("mine-lead").textContent=cfg.lead;
   const list=document.getElementById("mine-list"); list.textContent="";
@@ -747,11 +872,11 @@ function renderMine(){
 function renderLegend(){
   const lg=document.getElementById("legend"); lg.textContent="";
   const add=(style,txt)=>{const s=el("span");const i=el("i");i.style.cssText=style;s.append(i,document.createTextNode(txt));lg.append(s)};
-  const tk=role==="st"||role==="mt";
+  const tk=role!=="team";
   lg.hidden=mitv!=="on"&&!(tk&&selfv==="on");
   if(role==="team"){
-    if(mitv==="on"){add("background:var(--mt)","MT");add("background:var(--st)","ST");add("background:var(--dps)","DPS");
-    lg.append(el("span",null,"只列團減，不含坦克個人減傷"));}
+    if(mitv==="on"){add("background:var(--mt)","MT");add("background:var(--st)","ST");add("background:var(--heal,#2f9a55)","補師");add("background:var(--dps)","DPS");
+    lg.append(el("span",null,"只列團減，不含個人減傷"));}
   }else{
     if(mitv==="on")add("background:var(--st)","我的團減");if(tk&&selfv==="on")add("background:var(--self)","我的個人減傷");if(mitv==="on")add("background:var(--chip);box-shadow:0 0 0 1px var(--line) inset","其他人的團減");
   }
@@ -763,13 +888,19 @@ function render(){
   document.body.classList.toggle("fit",view==="fit");
   document.body.classList.toggle("nopos",posv==="off");
   document.body.classList.toggle("nomit",mitv==="off");
-  document.getElementById("self-bar").hidden=!(role==="st"||role==="mt");
+  document.getElementById("self-bar").hidden=role==="team";
+  document.body.classList.toggle("editing",editing);
+  document.getElementById("edbar").hidden=!editing;
+  document.getElementById("edit-btn").setAttribute("aria-pressed",editing);
+  {const n=Object.keys(custom.rows).length;document.getElementById("ed-count").textContent=n?`（已自訂 ${n} 招）`:""}
+  {const sel=document.getElementById("role-sel");sel.textContent="";const o0=el("option",null,"全隊");o0.value="team";sel.append(o0);
+   for(const sl of SLOTS){const o=el("option",null,slotLabel(sl));o.value=sl.toLowerCase();sel.append(o)}sel.value=role;}
   for(const b of document.querySelectorAll("[data-tg]")) b.setAttribute("aria-pressed",(b.dataset.tg==="pos"?posv:b.dataset.tg==="mit"?mitv:selfv)==="on");
   for(const b of document.querySelectorAll("[data-mit]")) b.setAttribute("aria-pressed",b.dataset.mit===mitv);
   for(const b of document.querySelectorAll("[data-pos]")) b.setAttribute("aria-pressed",b.dataset.pos===posv);
   for(const b of document.querySelectorAll("[data-view]")) b.setAttribute("aria-pressed",b.dataset.view===view);
   for(const b of document.querySelectorAll("[data-span]")) b.setAttribute("aria-pressed",b.dataset.span===span);
-  document.getElementById("h-role").textContent=roles[role].h;
+  document.getElementById("h-role").textContent=roleInfo(role).h;
   for(const b of document.querySelectorAll("[data-role]")) if(b.tagName==="BUTTON") b.setAttribute("aria-pressed",b.dataset.role===role);
   for(const b of document.querySelectorAll("[data-mode]")) b.setAttribute("aria-pressed",b.dataset.mode===mode);
   document.getElementById("m-mit").textContent=role==="team"?"只看要下團減的":"只看我要按的";
@@ -812,6 +943,68 @@ document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.clos
 document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".figbtn");if(b){if(figPinned===b){figHide()}else{figPinned=b;figShow(b)}return}if(!figPop.contains(e.target))figHide()});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")figHide()});
 addEventListener("scroll",()=>{if(!figPop.hidden)figHide()},{passive:true});
+
+/* ===== 編輯器 ===== */
+document.getElementById("role-sel").onchange=e=>{role=e.target.value;render()};
+document.getElementById("edit-btn").onclick=()=>{editing=!editing;closePops();render();if(editing)toastMsg("編輯模式：在每一招下面按「＋ 減傷」",2600)};
+document.getElementById("ed-done").onclick=()=>{editing=false;closePops();render()};
+function toastMsg(t,ms){const el2=document.getElementById("toast");el2.textContent=t;el2.hidden=false;clearTimeout(toastMsg.t);toastMsg.t=setTimeout(()=>el2.hidden=true,ms||2200)}
+const partyPop=document.getElementById("party-pop"),addPop=document.getElementById("add-pop");
+function placePop(pop,anchor){pop.hidden=false;const b=anchor.getBoundingClientRect(),w=pop.offsetWidth,h=pop.offsetHeight;
+  pop.style.left=Math.max(12,Math.min(b.left,innerWidth-w-12))+"px";let top=b.bottom+6;if(top+h>innerHeight-12)top=Math.max(12,b.top-h-6);pop.style.top=top+"px"}
+function closePops(){partyPop.hidden=true;addPop.hidden=true}
+document.addEventListener("mousedown",e=>{for(const p of [partyPop,addPop])if(!p.hidden&&!p.contains(e.target)&&!e.target.closest("#party-btn,.chipadd"))p.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePops()});
+function jobSelect(val){const sel=document.createElement("select");for(const [g,codes] of JOB_GROUPS){const og=document.createElement("optgroup");og.label=g;for(const c of codes){const o=el("option",null,JOBS[c].n);o.value=c;og.append(o)}sel.append(og)}sel.value=val;return sel}
+document.getElementById("party-btn").onclick=e=>{e.stopPropagation();if(!partyPop.hidden){partyPop.hidden=true;return}
+  addPop.hidden=true;partyPop.textContent="";partyPop.append(el("h4",null,"隊伍職業"));
+  for(const sl of SLOTS){const row=el("div","row2");row.append(el("b",null,sl));const sel=jobSelect(jobOf(sl));sel.setAttribute("aria-label",sl+" 職業");
+    sel.onchange=()=>{if(sel.value===DEF_PARTY[sl])delete custom.party[sl];else custom.party[sl]=sel.value;saveCustom();render()};row.append(sel);partyPop.append(row)}
+  partyPop.append(el("p","hint2","換職業後，編輯減傷時會列出該職業的技能。"));
+  const acts=el("div","acts");const ok=el("button","primary","完成");ok.type="button";ok.onclick=()=>partyPop.hidden=true;acts.append(ok);partyPop.append(acts);
+  placePop(partyPop,e.currentTarget)};
+function openAdd(r,anchor){partyPop.hidden=true;addPop.textContent="";
+  addPop.append(el("h4",null,"新增減傷：「"+shortName(r)+"」"+r.t));
+  const l1=el("label",null,"職責");const slot=document.createElement("select");for(const sl of SLOTS){const o=el("option",null,slotLabel(sl));o.value=sl;slot.append(o)}
+  slot.value=role!=="team"?role.toUpperCase():"MT";l1.append(slot);
+  const l2=el("label",null,"技能");const skill=document.createElement("select");l2.append(skill);
+  const l3=el("label",null,"自訂技能名稱");const cin=document.createElement("input");cin.type="text";cin.placeholder="例如：鐵壁＋聖盾陣、挑釁拿一仇";l3.append(cin);
+  const types=el("div","types");const mk=(v,t)=>{const lb=document.createElement("label");const ip=document.createElement("input");ip.type="radio";ip.name="addtype";ip.value=v;lb.append(ip,document.createTextNode(t));return [lb,ip]};
+  const [lt,it]=mk("team","團減"),[ls,is]=mk("self","個人減傷");types.append(lt,ls);
+  const l4=el("label",null,"按鍵時間（選填，例如 08:27）");const pin=document.createElement("input");pin.type="text";pin.inputMode="numeric";pin.placeholder=r.press||r.t.replace("≈","");pin.value=(r._id in custom.press)?(custom.press[r._id]||""):"";l4.append(pin);
+  function fill(){skill.textContent="";const sk=skillsOf(jobOf(slot.value));
+    for(const [g,t] of [["團減","team"],["個人減傷","self"]]){const list=sk.filter(q=>q[2]===t);if(!list.length)continue;const og=document.createElement("optgroup");og.label=g;
+      for(const q of list){const o=el("option",null,q[0]+(q[1]?"（"+q[1]+"s）":""));o.value=q[0];o.dataset.t=t;og.append(o)}skill.append(og)}
+    const oc=el("option",null,"自訂…");oc.value="__custom";skill.append(oc);sync()}
+  function sync(){const cu=skill.value==="__custom";l3.hidden=!cu;types.hidden=!cu;if(cu){if(!it.checked&&!is.checked)it.checked=true;cin.focus()}}
+  slot.onchange=fill;skill.onchange=sync;
+  const acts=el("div","acts");const cancel=el("button",null,"取消");cancel.type="button";cancel.onclick=()=>addPop.hidden=true;
+  const ok=el("button","primary","新增");ok.type="button";
+  ok.onclick=()=>{let k,t;if(skill.value==="__custom"){k=cin.value.trim();t=is.checked?"self":"team";if(!k){cin.focus();return}}else{k=skill.value;t=skill.selectedOptions[0].dataset.t}
+    const p=pin.value.trim();if(p&&!/^\d{1,2}:\d{2}$/.test(p)){pin.focus();toastMsg("按鍵時間請寫成 08:27 這種格式",2600);return}
+    custom.rows[r._id]=assignOf(r).concat([{s:slot.value,k,t}]);
+    if(p)custom.press[r._id]=p;else if(r._id in custom.press&&!p)delete custom.press[r._id];
+    saveCustom();applyAssign();addPop.hidden=true;render();toastMsg("已新增 "+slot.value+" "+k)};
+  acts.append(cancel,ok);addPop.append(l1,l2,l3,types,l4,acts);fill();placePop(addPop,anchor);slot.focus()}
+function editRemove(r,i){const L=assignOf(r).slice();const x=L.splice(i,1)[0];custom.rows[r._id]=L;saveCustom();applyAssign();render();toastMsg("已刪除 "+x.s+" "+x.k)}
+/* 匯出／匯入／還原 */
+const modal=document.getElementById("ed-modal"),mTa=document.getElementById("ed-modal-ta"),mOk=document.getElementById("ed-modal-ok");
+let modalAct=null;
+function openModal(h,p,ok,val,ro,act){document.getElementById("ed-modal-h").textContent=h;document.getElementById("ed-modal-p").textContent=p;mOk.textContent=ok;
+  mTa.hidden=val===null;mTa.value=val||"";mTa.readOnly=!!ro;modalAct=act;modal.hidden=false;(val===null?mOk:mTa).focus();if(ro)mTa.select()}
+document.getElementById("ed-modal-cancel").onclick=()=>modal.hidden=true;
+modal.addEventListener("mousedown",e=>{if(e.target===modal)modal.hidden=true});
+mOk.onclick=()=>{if(modalAct)modalAct()};
+const enc=o=>"M8S1:"+btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+const dec=t=>{t=t.trim();if(!t.startsWith("M8S1:"))throw 0;const o=JSON.parse(decodeURIComponent(escape(atob(t.slice(5)))));if(!o||o.v!==1)throw 0;return o};
+document.getElementById("ed-export").onclick=()=>{const code=enc(custom);
+  openModal("匯出分享碼","複製下面這段文字，貼給隊友，對方按「匯入分享碼」就會套用一樣的減傷軸和職業。","複製",code,true,async()=>{
+    try{await navigator.clipboard.writeText(code);toastMsg("已複製分享碼")}catch(e){mTa.select();toastMsg("請按 Ctrl+C 複製",2600)}})};
+document.getElementById("ed-import").onclick=()=>openModal("匯入分享碼","把隊友給你的分享碼貼在下面。會取代你目前的自訂內容。","套用","",false,()=>{
+  try{const o=dec(mTa.value);custom={v:1,party:o.party||{},rows:o.rows||{},press:o.press||{}};saveCustom();applyAssign();modal.hidden=true;render();toastMsg("已套用分享碼")}
+  catch(e){toastMsg("分享碼格式不對，請確認有完整複製（開頭是 M8S1:）",3200)}});
+document.getElementById("ed-reset").onclick=()=>openModal("還原預設","會清掉你所有自訂的減傷、按鍵時間和隊伍職業，回到網站原本的軸。","確定還原",null,false,()=>{
+  custom={v:1,party:{},rows:{},press:{}};saveCustom();applyAssign();modal.hidden=true;render();toastMsg("已還原預設")});
 
 /* 一頁塞滿：自動選欄數＋縮放，讓時間軸塞進一個畫面 */
 function fitTl(){const tl=document.getElementById("tl");
@@ -900,7 +1093,7 @@ function fxSpawn(skin){const box=document.getElementById("fx");box.textContent="
   function cssText(){let t="";for(const el of document.querySelectorAll("style"))t+=el.textContent+"\n";
     const parts=t.split(/(url\("[^"]*"\))/);
     return parts.map((x,i)=>i%2?x:x.replace(/:root/g,".cap-root").replace(/\bbody\b/g,".cap-body").replace(/\bhtml\b/g,".cap-root")).join("")+
-      "\n.cap-body .controls,.cap-body .hdtools,.cap-body .figbtn,.cap-body .fithelp,.cap-body .toast,.cap-body .fx,.cap-body .figpop,.cap-body .relpop,.cap-body .thm-menu{display:none!important}.cap-body .hd{padding-right:0!important;padding-top:0!important}.cap-body .wrap{padding-block:24px!important}.cap-body{margin:0;min-height:100%}";}
+      "\n.cap-body .controls,.cap-body .edbar,.cap-body .chipx,.cap-body .chipadd,.cap-body .pop,.cap-body .modal,.cap-body .hdtools,.cap-body .figbtn,.cap-body .fithelp,.cap-body .toast,.cap-body .fx,.cap-body .figpop,.cap-body .relpop,.cap-body .thm-menu{display:none!important}.cap-body .hd{padding-right:0!important;padding-top:0!important}.cap-body .wrap{padding-block:24px!important}.cap-body{margin:0;min-height:100%}";}
   async function go(){if(btn.getAttribute("aria-busy")==="true")return;btn.setAttribute("aria-busy","true");say("正在產生圖片…");
     try{
       const wrap=document.querySelector(".wrap");const W=Math.ceil(wrap.getBoundingClientRect().width+0);
@@ -937,7 +1130,7 @@ function fxSpawn(skin){const box=document.getElementById("fx");box.textContent="
 
 /* release notes popup */
 (function(){const b=document.getElementById("rel-btn"),pop=document.getElementById("release"),dot=b.querySelector(".reldot");
-  const VER="v1.5.3"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
+  const VER="v1.6"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
   function open(o){pop.hidden=!o;b.setAttribute("aria-expanded",o);if(o){dot.hidden=true;try{localStorage.setItem("m8s-relseen",VER)}catch(e){}}}
   b.onclick=e=>{e.stopPropagation();open(pop.hidden)};
   document.getElementById("rel-x").onclick=()=>{open(false);b.focus()};
