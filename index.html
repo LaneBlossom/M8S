@@ -399,6 +399,10 @@ body.compact .row.plain.alt{background:color-mix(in srgb,var(--chip) 85%,var(--p
 .bar .tg.tg{background:var(--panel)!important;border-color:var(--line)!important;box-shadow:none!important}
 .bar .tg.tg[aria-pressed="true"]{color:var(--fg)!important}
 .bar .tg.tg[aria-pressed="false"]{color:var(--muted)!important}
+.pos .pk,body.compact .pos .pk{display:inline-grid;place-items:center;width:18px;height:18px;padding:0;border-radius:50%;align-self:center}
+.pos .pk svg{width:13px;height:13px}
+body.compact .pos .pk{width:16px;height:16px}
+body.compact .pos .pk svg{width:11px;height:11px}
 </style>
 
 <div class="fx" id="fx" aria-hidden="true"></div>
@@ -414,8 +418,9 @@ body.compact .row.plain.alt{background:color-mix(in srgb,var(--chip) 85%,var(--p
       <button type="button" class="relbtn" id="rel-btn" aria-haspopup="dialog" aria-controls="release" title="更新紀錄"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="reldot"></span></button>
     </div>
   <div class="relpop" id="release" role="dialog" aria-label="更新紀錄" hidden>
-    <div class="relhead"><b>更新紀錄</b><span>最新 v1.5.2・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
+    <div class="relhead"><b>更新紀錄</b><span>最新 v1.5.3・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
     <ol>
+      <li><b>v1.5.3</b><time>11/01</time><ul><li>站位改成跑步小人圖示</li></ul></li>
       <li><b>v1.5.2</b><time>11/01</time><ul><li>灰色招式加深，各主題更清楚</li><li>CyberPunk 拿掉大樓、武士道改一把刀</li><li>修正特別版主題的開關樣式</li></ul></li>
       <li><b>v1.5.1</b><time>11/01</time><ul><li>匯出圖片</li><li>團減／個人減傷可分開隱藏</li><li>招式交錯底色</li><li>一頁塞滿加速、加 ? 說明</li></ul></li>
       <li><b>v1.5</b><time>11/01</time><ul><li>新增「一頁塞滿」版面</li></ul></li>
@@ -698,7 +703,7 @@ function renderTimeline(){
       }
       if(selfv==="on") for(const sk of mySelf(r)){const ch=el("span","chip mine-self");ch.append(el("span","r","個人"),document.createTextNode(sk));chips.append(ch)}
       if(chips.children.length) b.append(chips);
-      if(r.pos){const pp=el("div","pos");pp.append(el("span","pk","站位"),document.createTextNode(r.pos));b.append(pp)}
+      if(r.pos){const pp=el("div","pos");const ic=el("span","pk");ic.innerHTML=RUNSVG;ic.title="站位";ic.setAttribute("role","img");ic.setAttribute("aria-label","站位");pp.append(ic,document.createTextNode(r.pos));b.append(pp)}
       if(r.n) b.append(el("div","note",r.n));
       const rn=role==="st"?r.nst:role==="mt"?r.nmt:null;
       if(rn) b.append(el("div","note role",rn));
@@ -785,6 +790,7 @@ function tpDiv(tp){const d=el("div","tpdiv "+tp[0]);const red=tp[0]==="red";
   d.title="傳送裝置："+(red?"紅色":"藍色")+"，傳送後 "+tp[1]+" 才能再傳";
   const ic=document.createElement("span");ic.className="tpi";ic.innerHTML=TPSVG;
   d.append(el("span","tpl"),ic,el("span","tps","傳送 "+tp[1]+"・"+tp[2]),el("span","tpl"));return d}
+const RUNSVG='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="15.5" cy="4" r="2.4" fill="currentColor"/><path d="M13.6 7.6 9.8 9.4 8 13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.6 7.6 12 13l3.6 2.8 1.2 5.4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13l-2.2 4.2-5 1.4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.6 7.6 16.4 11l3.4.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const FIGMAP=[["爆震","quake"],["魔光","ray"],["風震魔印","purge"],["雙牙暴風擊","tempest"],["獨狼的詛咒","lament"],["八連光彈","eight"],["回天動地","circuit"]];
 const FIGCAP={circuit:""};
 function figOf(r){const m=FIGMAP.find(([k])=>r.m.includes(k));return m?m[1]:null}
@@ -931,7 +937,7 @@ function fxSpawn(skin){const box=document.getElementById("fx");box.textContent="
 
 /* release notes popup */
 (function(){const b=document.getElementById("rel-btn"),pop=document.getElementById("release"),dot=b.querySelector(".reldot");
-  const VER="v1.5.2"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
+  const VER="v1.5.3"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
   function open(o){pop.hidden=!o;b.setAttribute("aria-expanded",o);if(o){dot.hidden=true;try{localStorage.setItem("m8s-relseen",VER)}catch(e){}}}
   b.onclick=e=>{e.stopPropagation();open(pop.hidden)};
   document.getElementById("rel-x").onclick=()=>{open(false);b.focus()};
