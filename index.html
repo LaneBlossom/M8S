@@ -281,7 +281,7 @@ body.nopos .arena{display:none!important}
 .tpline.red{color:var(--warn)}
 body.compact .tpline{font-size:13px}
 body.compact .tpi{width:18px;height:18px}
-.pos{display:flex;align-items:baseline;gap:8px;font-size:13px;font-weight:600;color:var(--fg)}
+.pos{display:flex;align-items:baseline;gap:8px;font-size:13px;font-weight:400;color:var(--muted)}
 .pos .pk{flex:none;font-size:11px;font-weight:700;padding:1px 7px;border-radius:4px;background:var(--p2);color:var(--on-badge)}
 .rules{font-size:13px;line-height:1.7;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--p2);border-radius:8px;padding:10px 14px;margin-bottom:6px}
 .rules b{color:var(--p2)}
@@ -297,7 +297,7 @@ body.compact .tpi{width:18px;height:18px}
 .figpop{position:fixed;z-index:30;background:#111;border-radius:12px;padding:6px;box-shadow:0 12px 32px rgba(0,0,0,.4)}
 .figpop img{display:block;width:auto;height:auto;max-width:min(560px,calc(100vw - 28px));max-height:min(62vh,520px);border-radius:8px}
 .figcap{font-size:11px;color:#bbb;padding:4px 4px 0;text-align:right}
-.hd{position:relative;padding-right:170px}
+.hd{position:relative;padding-right:214px}
 .hdtools{position:absolute;top:0;right:0;display:flex;gap:8px;align-items:center}
 .thm{position:relative}
 .thmbtn{height:36px;display:inline-flex;align-items:center;gap:6px;padding:0 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);cursor:pointer;font:inherit;font-size:13px}
@@ -324,7 +324,7 @@ body.compact .tpi{width:18px;height:18px}
 .relx{font:inherit;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:6px}
 .relx:hover{background:var(--chip);color:var(--fg)}
 .relpop ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-.relpop ol>li{display:grid;grid-template-columns:36px 40px 1fr;gap:6px;align-items:baseline;min-width:0}
+.relpop ol>li{display:grid;grid-template-columns:46px 40px 1fr;gap:6px;align-items:baseline;min-width:0}
 .relpop li b{font-family:var(--f-disp);color:var(--st)}
 .relpop li time{font-family:var(--f-disp);color:var(--muted);font-variant-numeric:tabular-nums}
 .relpop ol>li{align-items:start}
@@ -359,7 +359,8 @@ body.compact .row.quiet .mech{font-weight:500}
 body.compact .press{display:none}
 body.compact .rules{display:none}
 body.nopos .pos,body.nopos .rules{display:none!important}
-body.compact .pos{font-size:13px;font-weight:500;flex-basis:100%;gap:6px}
+
+body.compact .pos{font-size:12.5px;font-weight:400;flex-basis:100%;gap:6px}
 body.compact .pos .pk{font-size:10px;padding:0 5px}
 
 body.compact .chips{gap:3px}
@@ -367,9 +368,38 @@ body.compact .chip{font-size:14px;padding:1px 7px 1px 3px;gap:5px}
 body.compact .chip .r{font-size:11px;padding:0 5px}
 
 @media (max-width:480px){.row{grid-template-columns:48px 1fr;gap:10px;padding:10px}.row time{font-size:15px}}
+.bar .tg,.bar .tg[aria-pressed]{display:inline-flex;align-items:center;gap:7px;padding:5px 12px 5px 6px;background:var(--panel);border-color:var(--line);font-weight:500;box-shadow:none}
+.tg .knob{position:relative;width:26px;height:15px;border-radius:999px;background:var(--line);transition:background .15s;flex:none}
+.tg .knob::after{content:"";position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.bar .tg[aria-pressed="true"]{color:var(--fg)}
+.tg[aria-pressed="true"] .knob{background:var(--st)}
+.tg[aria-pressed="true"] .knob::after{transform:translateX(11px)}
+.bar .tg[aria-pressed="false"]{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.tg .knob,.tg .knob::after{transition:none}}
+.fithelp{position:relative;display:inline-flex}
+.bar .qbtn{width:22px;height:22px;padding:0;border-radius:50%;font-size:12px;font-weight:700;line-height:1;display:grid;place-items:center;color:var(--muted);background:var(--panel);border:1px solid var(--line)}
+.bar .qbtn:hover,.bar .qbtn[aria-expanded="true"]{color:var(--st-fg);border-color:var(--st-ring);background:var(--st-bg)}
+.fitpop{position:absolute;top:30px;left:50%;transform:translateX(-50%);z-index:45;width:270px;max-width:calc(100vw - 24px);background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.22);padding:10px 12px;font-size:12px;line-height:1.6;font-weight:400;text-align:left;white-space:normal}
+.fitpop b{font-size:13px}
+.fitpop .now{display:flex;align-items:center;gap:8px;margin:2px 0 8px;padding:6px 8px;border-radius:8px;background:var(--chip)}
+.fitpop .st{font-weight:700;padding:1px 8px;border-radius:999px;color:var(--on-badge);white-space:nowrap}
+.fitpop .ok{background:#2f9a55} .fitpop .mid{background:#c9861a} .fitpop .ng{background:var(--warn)}
+.fitpop table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:12px;line-height:1.6}
+.fitpop td{padding:1px 0;color:var(--muted)} .fitpop td:last-child{text-align:right;color:var(--fg);white-space:nowrap;padding-left:8px}
+@media (max-width:520px){.fitpop{position:fixed;top:auto;left:12px;right:12px;bottom:12px;transform:none;width:auto}}
+body.compact .row.plain{background:var(--panel)}
+.row.plain time{color:var(--fg)}
+.row.alt{background:color-mix(in srgb,var(--chip) 70%,var(--panel))}
+body.compact .row.alt{background:color-mix(in srgb,var(--chip) 55%,transparent)}
+body.compact .row.plain.alt{background:color-mix(in srgb,var(--chip) 85%,var(--panel))}
+.row .mech{position:relative}
+.row.alt .hint{background:var(--panel)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+#exp-btn[aria-busy="true"]{opacity:.5;cursor:progress}
 </style>
 
 <div class="fx" id="fx" aria-hidden="true"></div>
+<div class="toast" id="toast" role="status" hidden></div>
 <div class="wrap">
   <header class="hd">
     <div class="hdtools">
@@ -377,17 +407,19 @@ body.compact .chip .r{font-size:11px;padding:0 5px}
         <button type="button" class="thmbtn" id="thm-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="thm-menu" title="主題顏色"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.2 0 1.8-.9 1.4-2l-.3-.8c-.4-1.1.4-2.2 1.6-2.2H17a4 4 0 0 0 4-4c0-5-4-9-9-9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="11" r="1.4" fill="currentColor"/><circle cx="10.5" cy="7" r="1.4" fill="currentColor"/><circle cx="15.5" cy="7.5" r="1.4" fill="currentColor"/></svg><span id="thm-name">跟系統</span></button>
         <ul class="thm-menu" id="thm-menu" role="menu" aria-label="主題顏色" hidden><li><button type="button" role="menuitemradio" data-thm="auto" aria-checked="false"><span class="sw" style="background:#e9ebf2;box-shadow:inset -9px 0 0 #1b1e29"></span>跟系統</button></li><li><button type="button" role="menuitemradio" data-thm="light" aria-checked="false"><span class="sw" style="background:#f3f4f8;box-shadow:inset -9px 0 0 #b8860b"></span>淺色</button></li><li><button type="button" role="menuitemradio" data-thm="dark" aria-checked="false"><span class="sw" style="background:#12141c;box-shadow:inset -9px 0 0 #f2c14e"></span>深色</button></li><li><button type="button" role="menuitemradio" data-thm="sakura" aria-checked="false"><span class="sw" style="background:#fbf1f3;box-shadow:inset -9px 0 0 #c0567f"></span>櫻花</button></li><li><button type="button" role="menuitemradio" data-thm="matcha" aria-checked="false"><span class="sw" style="background:#f1f4ea;box-shadow:inset -9px 0 0 #4f8a2a"></span>抹茶</button></li><li><button type="button" role="menuitemradio" data-thm="deepsea" aria-checked="false"><span class="sw" style="background:#0b1726;box-shadow:inset -9px 0 0 #5cc8ff"></span>深海</button></li><li class="thm-sep" role="presentation">特別版</li><li><button type="button" role="menuitemradio" data-thm="fluffy" aria-checked="false"><span class="sw" style="background:linear-gradient(#cfe6ff,#fdeef6);box-shadow:inset -9px 0 0 #ff7fa3"></span>睡覺數羊</button></li><li><button type="button" role="menuitemradio" data-thm="journal" aria-checked="false"><span class="sw" style="background:#f6f1e6;box-shadow:inset -9px 0 0 #b8642f"></span>手帳</button></li><li><button type="button" role="menuitemradio" data-thm="island" aria-checked="false"><span class="sw" style="background:linear-gradient(#bfe6f7,#c9efe9 60%,#f6ecd6);box-shadow:inset -9px 0 0 #d9622c"></span>海島</button></li><li><button type="button" role="menuitemradio" data-thm="rgb" aria-checked="false"><span class="sw" style="background:linear-gradient(90deg,#ff0040,#ffe600,#00ff6a,#00c8ff,#ff00c8)"></span>電競 RGB</button></li><li><button type="button" role="menuitemradio" data-thm="ink" aria-checked="false"><span class="sw" style="background:#f3efe4;box-shadow:inset -9px 0 0 #1e1e1e"></span>水墨</button></li><li><button type="button" role="menuitemradio" data-thm="bushido" aria-checked="false"><span class="sw" style="background:#0b1224;box-shadow:inset -9px 0 0 #e2bb5e"></span>武士道</button></li><li><button type="button" role="menuitemradio" data-thm="cyber" aria-checked="false"><span class="sw" style="background:#07060d;box-shadow:inset -9px 0 0 #ff2bd6"></span>CyberPunk</button></li><li class="thm-sep" role="presentation"></li><li><button type="button" role="menuitemradio" data-thm="contrast" aria-checked="false"><span class="sw" style="background:#000000;box-shadow:inset -9px 0 0 #ffd400"></span>高對比</button></li></ul>
       </div>
+      <button type="button" class="relbtn" id="exp-btn" title="把目前的畫面存成圖片" aria-label="匯出圖片"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="10" r="1.8" fill="currentColor"/><path d="M4 17l5-4.5 3.5 3 3-2.5L20 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
       <button type="button" class="relbtn" id="rel-btn" aria-haspopup="dialog" aria-controls="release" title="更新紀錄"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class="reldot"></span></button>
     </div>
   <div class="relpop" id="release" role="dialog" aria-label="更新紀錄" hidden>
-    <div class="relhead"><b>更新紀錄</b><span>最新 v1.5・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
+    <div class="relhead"><b>更新紀錄</b><span>最新 v1.5.1・11/01</span><button type="button" class="relx" id="rel-x" aria-label="關閉">✕</button></div>
     <ol>
-      <li><b>v1.5</b><time>11/01</time><ul><li>版面新增「一頁塞滿」：精簡版自動選欄數並縮放，整段時間軸塞進一個畫面</li></ul></li>
-      <li><b>v1.4</b><time>11/01</time><ul><li>爆震名稱加上（大地槌）</li><li>補充說明改成 # 小標籤（#44分攤、#雙T死刑、#炸平台、#22分組 等）</li><li>招與招之間加上傳送陣狀態線（紅 7 秒／綠 2 秒）</li><li>P2：塔一消失就去組別平台集合</li><li>P3：鎧袖一觸 ② Boss 轉面向後，C 改成 Boss 正面</li><li>P4：換平台一律往左走（順時針）</li><li>P2／P3 傳送陣恢復 2 秒的時機（回天動地、鎧袖一觸 ② 打完後）</li><li>右上角加上更新紀錄</li><li>右上角加上主題選單：淺色、深色、櫻花、抹茶、深海、高對比，特別版睡覺數羊、手帳、海島、水墨、武士道、電競 RGB、CyberPunk</li><li>本體平台位置改成可收合（預設收合）</li><li>第一次打開預設精簡版面，之後記住每個人的選擇</li></ul></li>
-      <li><b>v1.3</b><time>10/29</time><ul><li>回天動地加上站位圖</li></ul></li>
-      <li><b>v1.2</b><time>10/29</time><ul><li>本體機制旁加上「看圖」，滑鼠指過去或點一下會跳出站位圖（猫猫窝攻略组機制速覽）</li></ul></li>
-      <li><b>v1.1</b><time>10/27</time><ul><li>頁首加上本體平台位置圖（C、C左、C右、一運編號 1–4）</li><li>每招加上站位，可用「站位」開關隱藏</li><li>加上魔光、雙牙暴風擊（常規解法）、獨狼的詛咒的說明欄</li></ul></li>
-      <li><b>v1.0</b><time>10/27</time><ul><li>第一版上線：前半門神＋後半本體全機制時間軸</li><li>可切換全隊、MT、ST、D1–D4</li><li>開關：完整機制／只看要按的、範圍、精簡（副螢幕）版面</li></ul></li>
+      <li><b>v1.5.1</b><time>11/01</time><ul><li>匯出圖片</li><li>團減／個人減傷可分開隱藏</li><li>招式交錯底色</li><li>一頁塞滿加速、加 ? 說明</li></ul></li>
+      <li><b>v1.5</b><time>11/01</time><ul><li>新增「一頁塞滿」版面</li></ul></li>
+      <li><b>v1.4</b><time>11/01</time><ul><li># 標籤、傳送陣狀態線</li><li>P2～P4 站位與換平台補充</li><li>主題選單（含特別版）</li><li>更新紀錄、平台圖可收合</li></ul></li>
+      <li><b>v1.3</b><time>10/29</time><ul><li>回天動地站位圖</li></ul></li>
+      <li><b>v1.2</b><time>10/29</time><ul><li>「看圖」站位圖</li></ul></li>
+      <li><b>v1.1</b><time>10/27</time><ul><li>平台位置圖</li><li>每招站位與說明欄</li></ul></li>
+      <li><b>v1.0</b><time>10/27</time><ul><li>第一版上線</li></ul></li>
     </ol>
   </div>
     <div class="eyebrow">AAC Cruiserweight M4 Savage · 呼嘯之劍 · 門神＋本體</div>
@@ -420,13 +452,14 @@ body.compact .chip .r{font-size:11px;padding:0 5px}
     <div class="bar" role="group" aria-label="版面">
       <span class="lbl">版面</span>
       <button id="v-full" data-view="full" aria-pressed="true">詳細</button>
-      <button id="v-compact" data-view="compact" aria-pressed="false">精簡（副螢幕）</button>
-      <button id="v-fit" data-view="fit" aria-pressed="false" title="精簡版，並自動縮放到一個畫面放得下">一頁塞滿</button>
+      <button id="v-compact" data-view="compact" aria-pressed="false">精簡</button>
+      <button id="v-fit" data-view="fit" aria-pressed="false" title="精簡版，並自動縮放到一個畫面放得下">一頁塞滿</button><span class="fithelp"><button type="button" class="qbtn" id="fit-q" aria-label="一頁塞滿支援的解析度" aria-expanded="false" aria-controls="fit-pop">?</button><span class="fitpop" id="fit-pop" role="tooltip" hidden></span></span>
     </div>
-    <div class="bar" role="group" aria-label="站位">
-      <span class="lbl">站位</span>
-      <button id="p-on" data-pos="on" aria-pressed="true">顯示</button>
-      <button id="p-off" data-pos="off" aria-pressed="false">隱藏</button>
+    <div class="bar" role="group" aria-label="顯示項目">
+      <span class="lbl">項目</span>
+      <button type="button" class="tg" data-tg="pos" aria-pressed="true"><span class="knob" aria-hidden="true"></span>站位</button>
+      <button type="button" class="tg" data-tg="mit" aria-pressed="true"><span class="knob" aria-hidden="true"></span>團減</button>
+      <button type="button" class="tg" data-tg="self" id="self-bar" aria-pressed="true"><span class="knob" aria-hidden="true"></span>個人減傷</button>
     </div>
     <div class="legend" id="legend"></div>
   </div>
@@ -598,14 +631,17 @@ const roles={
 
 const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
 const RN={MT:"MT",ST:"ST",D1:"D1",D2:"D2",D3:"D3",D4:"D4"};
-let role="team", mode="all", view="compact", span="all", posv="on";
-try{role=localStorage.getItem("m8s-role")||role;mode=localStorage.getItem("m8s-mode")||mode;view=localStorage.getItem("m8s-view")||view;span=localStorage.getItem("m8s-span")||span;posv=localStorage.getItem("m8s-pos")||posv}catch(e){}
+let role="team", mode="all", view="compact", span="all", posv="on", mitv="on", selfv="on";
+try{role=localStorage.getItem("m8s-role")||role;mode=localStorage.getItem("m8s-mode")||mode;view=localStorage.getItem("m8s-view")||view;span=localStorage.getItem("m8s-span")||span;posv=localStorage.getItem("m8s-pos")||posv;mitv=localStorage.getItem("m8s-mit")||mitv;selfv=localStorage.getItem("m8s-self")||selfv}catch(e){}
 const h=(location.hash||"").slice(1); if(h==="team"||h==="st"||h==="mt"||/^d[1-4]$/.test(h)) role=h;
 if(!(role==="team"||role==="st"||role==="mt"||/^d[1-4]$/.test(role))) role="team";
 
 function myTeam(r){const R=role.toUpperCase();return r.c.filter(x=>x[0]===R)}
 function mySelf(r){return role==="team"?[]:(r[role]||[])}
-function relevant(r){return role==="team"?r.c.length>0:(myTeam(r).length+mySelf(r).length)>0}
+function plainMode(){return mitv!=="on"&&!((role==="st"||role==="mt")&&selfv==="on")}
+function relevant(r){if(plainMode())return true;
+  const t=mitv==="on"?(role==="team"?r.c.length:myTeam(r).length):0;
+  const s=selfv==="on"?mySelf(r).length:0;return (t+s)>0}
 
 const SHORT={"00:44":"群狼劍 ①＋群狼斬波","02:45":"群狼劍 ②＋群狼斬波","05:08":"群狼劍 ③＋群狼斬波",
  "≈02:03":"一刀兩斷 ①（MT 無敵）","≈05:20":"一刀兩斷 ②（ST 無敵）","02:58":"光狼召喚 → 風塵咆哮","04:18":"風塵光狼斬 ×5","04:21":"風塵光狼斬 最後一下",
@@ -624,7 +660,7 @@ function shortName(r){return SHORT[r.t]||r.m.replace(/（[^）]{7,}）/g,"")}
 function renderTimeline(){
   const tl=document.getElementById("tl"); tl.textContent="";
   const R=role.toUpperCase();
-  let pi=0, lastP="";
+  let pi=0, lastP="", zi=0;
   for(const grp of data){
     if(grp.part){pi++;lastP=""}
     if(span!=="all"&&String(pi)!==span) continue;
@@ -642,21 +678,21 @@ function renderTimeline(){
     for(const r of rows){
       if(!(mode==="all"||relevant(r))){ g.append(tpDiv(r.tp)); continue; }
       const rel=relevant(r);
-      const row=el("div","row"+(rel?" hit":" quiet"));
+      const row=el("div","row"+(plainMode()?" plain":(rel?" hit":" quiet"))+((zi++)%2?" alt":""));
       row.append(el("time",null,r.t));
       const b=el("div","body");
-      const mh=el("div","mech",view==="compact"?shortName(r):r.m); for(const h of hintsOf(r)) mh.append(el("span","hint","#"+h)); {const fk=figOf(r); if(fk){const fb=el("button","figbtn","看圖");fb.type="button";fb.dataset.fig=fk;fb.dataset.alt=r.m+" 的站位圖";mh.append(fb)}}
-      if(r.press && (role==="team"?r.c.length:myTeam(r).length)) mh.append(el("span","press","軸 "+r.press+" 按"));
+      const mh=el("div","mech",(view==="compact"||view==="fit")?shortName(r):r.m); for(const h of hintsOf(r)) mh.append(el("span","hint","#"+h)); {const fk=figOf(r); if(fk){const fb=el("button","figbtn","看圖");fb.type="button";fb.dataset.fig=fk;fb.dataset.alt=r.m+" 的站位圖";mh.append(fb)}}
+      if(mitv==="on" && r.press && (role==="team"?r.c.length:myTeam(r).length)) mh.append(el("span","press","軸 "+r.press+" 按"));
       b.append(mh);
       const chips=el("div","chips");
       const sorted=[...r.c].sort((a,b)=>(b[0]===R)-(a[0]===R));
-      for(const [who,sk] of sorted){
+      if(mitv==="on") for(const [who,sk] of sorted){
         const mine=role!=="team"&&who===R;
         const ch=el("span","chip "+(role==="team"?"":(mine?"mine-team":"other")));
         ch.append(el("span","r "+who,mine?"我":RN[who]),document.createTextNode(sk));
         chips.append(ch);
       }
-      for(const sk of mySelf(r)){const ch=el("span","chip mine-self");ch.append(el("span","r","個人"),document.createTextNode(sk));chips.append(ch)}
+      if(selfv==="on") for(const sk of mySelf(r)){const ch=el("span","chip mine-self");ch.append(el("span","r","個人"),document.createTextNode(sk));chips.append(ch)}
       if(chips.children.length) b.append(chips);
       if(r.pos){const pp=el("div","pos");pp.append(el("span","pk","站位"),document.createTextNode(r.pos));b.append(pp)}
       if(r.n) b.append(el("div","note",r.n));
@@ -702,11 +738,13 @@ function renderMine(){
 function renderLegend(){
   const lg=document.getElementById("legend"); lg.textContent="";
   const add=(style,txt)=>{const s=el("span");const i=el("i");i.style.cssText=style;s.append(i,document.createTextNode(txt));lg.append(s)};
+  const tk=role==="st"||role==="mt";
+  lg.hidden=mitv!=="on"&&!(tk&&selfv==="on");
   if(role==="team"){
-    add("background:var(--mt)","MT");add("background:var(--st)","ST");add("background:var(--dps)","DPS");
-    lg.append(el("span",null,"只列團減，不含坦克個人減傷"));
+    if(mitv==="on"){add("background:var(--mt)","MT");add("background:var(--st)","ST");add("background:var(--dps)","DPS");
+    lg.append(el("span",null,"只列團減，不含坦克個人減傷"));}
   }else{
-    add("background:var(--st)","我的團減");if(role==="st"||role==="mt")add("background:var(--self)","我的個人減傷");add("background:var(--chip);box-shadow:0 0 0 1px var(--line) inset","其他人的團減");
+    if(mitv==="on")add("background:var(--st)","我的團減");if(tk&&selfv==="on")add("background:var(--self)","我的個人減傷");if(mitv==="on")add("background:var(--chip);box-shadow:0 0 0 1px var(--line) inset","其他人的團減");
   }
 }
 
@@ -715,6 +753,10 @@ function render(){
   document.body.classList.toggle("compact",view==="compact"||view==="fit");
   document.body.classList.toggle("fit",view==="fit");
   document.body.classList.toggle("nopos",posv==="off");
+  document.body.classList.toggle("nomit",mitv==="off");
+  document.getElementById("self-bar").hidden=!(role==="st"||role==="mt");
+  for(const b of document.querySelectorAll("[data-tg]")) b.setAttribute("aria-pressed",(b.dataset.tg==="pos"?posv:b.dataset.tg==="mit"?mitv:selfv)==="on");
+  for(const b of document.querySelectorAll("[data-mit]")) b.setAttribute("aria-pressed",b.dataset.mit===mitv);
   for(const b of document.querySelectorAll("[data-pos]")) b.setAttribute("aria-pressed",b.dataset.pos===posv);
   for(const b of document.querySelectorAll("[data-view]")) b.setAttribute("aria-pressed",b.dataset.view===view);
   for(const b of document.querySelectorAll("[data-span]")) b.setAttribute("aria-pressed",b.dataset.span===span);
@@ -723,11 +765,13 @@ function render(){
   for(const b of document.querySelectorAll("[data-mode]")) b.setAttribute("aria-pressed",b.dataset.mode===mode);
   document.getElementById("m-mit").textContent=role==="team"?"只看要下團減的":"只看我要按的";
   renderLegend(); renderMine(); renderTimeline(); fitTl();
-  try{localStorage.setItem("m8s-role",role);localStorage.setItem("m8s-mode",mode);localStorage.setItem("m8s-view",view);localStorage.setItem("m8s-span",span);localStorage.setItem("m8s-pos",posv)}catch(e){}
+  try{localStorage.setItem("m8s-role",role);localStorage.setItem("m8s-mode",mode);localStorage.setItem("m8s-view",view);localStorage.setItem("m8s-span",span);localStorage.setItem("m8s-pos",posv);localStorage.setItem("m8s-mit",mitv);localStorage.setItem("m8s-self",selfv)}catch(e){}
 }
 for(const b of document.querySelectorAll("button[data-role]")) b.onclick=()=>{role=b.dataset.role;render()};
 for(const b of document.querySelectorAll("button[data-mode]")) b.onclick=()=>{mode=b.dataset.mode;render()};
 for(const b of document.querySelectorAll("button[data-view]")) b.onclick=()=>{view=b.dataset.view;render()};
+for(const b of document.querySelectorAll("button[data-tg]")) b.onclick=()=>{const k=b.dataset.tg,f=v=>v==="on"?"off":"on";if(k==="pos")posv=f(posv);else if(k==="mit")mitv=f(mitv);else selfv=f(selfv);render()};
+for(const b of document.querySelectorAll("button[data-mit]")) b.onclick=()=>{mitv=b.dataset.mit;render()};
 for(const b of document.querySelectorAll("button[data-pos]")) b.onclick=()=>{posv=b.dataset.pos;render()};
 for(const b of document.querySelectorAll("button[data-span]")) b.onclick=()=>{span=b.dataset.span;render()};
 
@@ -763,18 +807,18 @@ addEventListener("scroll",()=>{if(!figPop.hidden)figHide()},{passive:true});
 function fitTl(){const tl=document.getElementById("tl");
   tl.style.zoom="";tl.style.columnCount="";tl.style.columnWidth="";
   if(view!=="fit")return;
-  const top=tl.getBoundingClientRect().top+scrollY-scrollY; const avail=innerHeight-tl.getBoundingClientRect().top-10;
-  const W=tl.clientWidth; let best={z:0,c:1};
+  const avail=innerHeight-tl.getBoundingClientRect().top-10, W=tl.clientWidth, MINCOL=330;
   if(avail<200)return;
-  for(let c=1;c<=5;c++){
-    tl.style.columnCount=c;tl.style.columnWidth="auto";
-    const fits=z=>{tl.style.zoom=z;return tl.getBoundingClientRect().height<=avail};
-    let lo=0.4,hi=1;
-    if(fits(1)){lo=1}else{if(!fits(lo))continue;for(let k=0;k<9;k++){const m=(lo+hi)/2;if(fits(m))lo=m;else hi=m}}
-    if(W/lo/c<300)continue;
-    if(lo>best.z+0.005)best={z:lo,c};
-  }
-  tl.style.columnCount=best.c;tl.style.columnWidth="auto";tl.style.zoom=best.z||0.45;
+  const set=(c,z)=>{tl.style.columnCount=c;tl.style.columnWidth="auto";tl.style.zoom=z;return tl.getBoundingClientRect().height};
+  /* 量一次單欄高度，用它估欄數與縮放，最後只做少量微調（避免整頁反覆重排造成卡頓） */
+  const H1=set(1,1);
+  const maxC=z=>Math.max(1,Math.floor(W/z/MINCOL));
+  let c=Math.ceil(H1/avail*1.06), z=1;
+  if(c>maxC(1)){ z=Math.min(1,Math.sqrt(avail*W/(H1*MINCOL*1.1))); c=Math.min(maxC(z),Math.ceil(H1/(avail/z)*1.06)); }
+  c=Math.max(1,c);
+  let h=set(c,z);
+  for(let k=0;k<3&&h>avail;k++){ if(z===1&&c<maxC(1)){c++;h=set(c,z);continue} z=Math.max(0.4,z*Math.sqrt(avail/h)*0.98); c=Math.min(maxC(z),c+1); h=set(c,z); }
+  if(z<1&&h<avail*0.92){ const z2=Math.min(1,z*Math.sqrt(avail/h)*0.99); if(set(c,z2)>avail) set(c,z); }
 }
 let fitT=null;addEventListener("resize",()=>{clearTimeout(fitT);fitT=setTimeout(fitTl,120)});
 render();
@@ -817,9 +861,73 @@ function fxSpawn(skin){const box=document.getElementById("fx");box.textContent="
   let t="auto";try{t=localStorage.getItem("m8s-theme")||"auto"}catch(e){} set(t);
 })();
 
+/* 一頁塞滿說明 */
+(function(){const q=document.getElementById("fit-q"),pop=document.getElementById("fit-pop");
+  function status(){const w=innerWidth,h=innerHeight;let cls,txt,note;
+    const tl=document.getElementById("tl");
+    if(view==="fit"){const z=+(tl.style.zoom||1),fit=tl.getBoundingClientRect().bottom<=h+1;
+      if(!fit){cls="ng";txt="塞不下";note="畫面太小，建議改用「精簡」往下捲，或切到「只看我要按的」。"}
+      else if(z>=0.65){cls="ok";txt="支援";note="目前縮放 "+Math.round(z*100)+"%。"}
+      else{cls="mid";txt="可用・字偏小";note="目前縮放 "+Math.round(z*100)+"%，切到「只看我要按的」可以放大。"}}
+    else{ if(w>=1024&&h>=720){cls="ok";txt="支援";note="切到「一頁塞滿」就能一個畫面看完。"}
+      else if(w>=760&&h>=600){cls="mid";txt="可用・字偏小";note="搭配「只看我要按的」會比較清楚。"}
+      else{cls="ng";txt="不建議";note="手機或很小的視窗，開關列會佔掉太多空間，建議用「精簡」往下捲。"}}
+    return `<b>一頁塞滿</b><div class="now">你的畫面 ${w}×${h}<span class="st ${cls}">${txt}</span></div><div>${note}</div>
+<table style="margin-top:8px"><tr><td>電腦 1280×720 以上</td><td>✅ 支援</td></tr><tr><td>平板（iPad／Android，直橫皆可）</td><td>✅ 支援</td></tr><tr><td>小筆電 1024×600</td><td>⚠️ 字偏小</td></tr><tr><td>手機</td><td>❌ 不建議</td></tr></table>`}
+  function show(o){if(o)pop.innerHTML=status();pop.hidden=!o;q.setAttribute("aria-expanded",o)}
+  let pinned=false;
+  q.addEventListener("mouseenter",()=>{if(!pinned)show(true)});
+  q.addEventListener("mouseleave",()=>{if(!pinned)show(false)});
+  q.addEventListener("click",e=>{e.stopPropagation();pinned=!pinned||pop.hidden;show(pinned)});
+  document.addEventListener("click",e=>{if(!pop.hidden&&!pop.contains(e.target)){pinned=false;show(false)}});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!pop.hidden){pinned=false;show(false)}});
+  addEventListener("resize",()=>{if(!pop.hidden)setTimeout(()=>pop.innerHTML=status(),200)});
+})();
+
+/* 匯出圖片：把目前排版畫成一張 PNG（不需外部套件） */
+(function(){const btn=document.getElementById("exp-btn"),toast=document.getElementById("toast");let tt=null;
+  function say(t,ms){toast.textContent=t;toast.hidden=false;clearTimeout(tt);if(ms)tt=setTimeout(()=>toast.hidden=true,ms)}
+  function cssText(){let t="";for(const el of document.querySelectorAll("style"))t+=el.textContent+"\n";
+    const parts=t.split(/(url\("[^"]*"\))/);
+    return parts.map((x,i)=>i%2?x:x.replace(/:root/g,".cap-root").replace(/\bbody\b/g,".cap-body").replace(/\bhtml\b/g,".cap-root")).join("")+
+      "\n.cap-body .controls,.cap-body .hdtools,.cap-body .figbtn,.cap-body .fithelp,.cap-body .toast,.cap-body .fx,.cap-body .figpop,.cap-body .relpop,.cap-body .thm-menu{display:none!important}.cap-body .hd{padding-right:0!important;padding-top:0!important}.cap-body .wrap{padding-block:24px!important}.cap-body{margin:0;min-height:100%}";}
+  async function go(){if(btn.getAttribute("aria-busy")==="true")return;btn.setAttribute("aria-busy","true");say("正在產生圖片…");
+    try{
+      const wrap=document.querySelector(".wrap");const W=Math.ceil(wrap.getBoundingClientRect().width+0);
+      const clone=wrap.cloneNode(true);
+      clone.querySelectorAll("[hidden]").forEach(e=>{if(!e.closest(".arena"))e.remove()});
+      const tl=document.getElementById("tl"),ctl=clone.querySelector("#tl");if(ctl){ctl.style.zoom=tl.style.zoom;ctl.style.columnCount=tl.style.columnCount}
+      const R=document.documentElement;
+      const host=document.createElement("div");host.style.cssText="position:absolute;left:-99999px;top:0;width:"+W+"px";
+      const root=document.createElement("div");root.className="cap-root";for(const a of ["data-theme","data-skin"])if(R.hasAttribute(a))root.setAttribute(a,R.getAttribute(a));
+      const body=document.createElement("div");body.className=document.body.className+" cap-body";for(const k in document.body.dataset)body.dataset[k]=document.body.dataset[k];
+      body.append(clone);root.append(body);host.append(root);document.body.append(host);
+      const st=document.createElement("style");st.textContent=cssText();root.prepend(st);
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      const H=Math.ceil(root.getBoundingClientRect().height);
+      const bg=getComputedStyle(document.body).backgroundColor;
+      const xml=new XMLSerializer().serializeToString(root);host.remove();
+      const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml" style="width:${W}px;background:${bg};font:14px -apple-system,BlinkMacSystemFont,'Noto Sans TC','Microsoft JhengHei',sans-serif;color-scheme:normal">${xml}</div></foreignObject></svg>`;
+      const img=new Image();img.decoding="sync";
+      await new Promise((ok,ng)=>{img.onload=ok;img.onerror=()=>ng(new Error("img"));img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)});
+      const scale=Math.max(1,Math.min(2,15000/H,15000/W));
+      const cv=document.createElement("canvas");cv.width=Math.round(W*scale);cv.height=Math.round(H*scale);
+      const cx=cv.getContext("2d");cx.fillStyle=bg;cx.fillRect(0,0,cv.width,cv.height);cx.scale(scale,scale);cx.drawImage(img,0,0);
+      const blob=await new Promise(r=>cv.toBlob(r,"image/png"));if(!blob)throw new Error("blob");
+      const names={team:"全隊",st:"ST",mt:"MT",d1:"D1",d2:"D2",d3:"D3",d4:"D4"},sp={all:"全部","1":"前半","2":"後半"};
+      const d=new Date(),ds=`${d.getMonth()+1}${String(d.getDate()).padStart(2,"0")}`;
+      const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`M8S時間軸_${names[role]||role}_${sp[span]||span}_${ds}.png`;
+      document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+      window.__lastExport={w:cv.width,h:cv.height,size:blob.size};
+      say("圖片已下載",2500);
+    }catch(e){console.error(e);say("匯出失敗，請換成 Chrome 或 Edge 再試一次",4000)}
+    finally{btn.removeAttribute("aria-busy")}}
+  btn.onclick=go;
+})();
+
 /* release notes popup */
 (function(){const b=document.getElementById("rel-btn"),pop=document.getElementById("release"),dot=b.querySelector(".reldot");
-  const VER="v1.5"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
+  const VER="v1.5.1"; try{if(localStorage.getItem("m8s-relseen")===VER)dot.hidden=true}catch(e){}
   function open(o){pop.hidden=!o;b.setAttribute("aria-expanded",o);if(o){dot.hidden=true;try{localStorage.setItem("m8s-relseen",VER)}catch(e){}}}
   b.onclick=e=>{e.stopPropagation();open(pop.hidden)};
   document.getElementById("rel-x").onclick=()=>{open(false);b.focus()};
